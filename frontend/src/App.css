@@ -1,0 +1,29 @@
+@keyframes wiggle {
+  0% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(-7px);
+  }
+  20% {
+    transform: translateX(7px);
+  }
+  30% {
+    transform: translateX(-4px);
+  }
+  40% {
+    transform: translateX(4px);
+  }
+  50% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.wiggle {
+  animation: wiggle 1s ease-in-out infinite;
+}
+
+
