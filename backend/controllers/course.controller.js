@@ -1,4 +1,7 @@
 import { Course } from "../models/course.model.js";
+import { v2 as cloudinary } from "cloudinary";
+
+// course creation
 export const createCourse = async (req, res) => {
     const { title, description, price } = req.body;
     try {
@@ -39,5 +42,74 @@ export const createCourse = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: "Error creating course" })
+    }
+}
+
+// course updation
+export const updateCourse = async (req, res) => {
+    const { courseId } = req.params;
+    const { title, description, price, image } = req.body;
+
+    try {
+        const course = await Course.updateOne({
+            _id: courseId
+        }, {
+            title,
+            description,
+            price,
+            image: {
+                public_id: image?.public_id,
+                url: image?.url,
+            }
+        })
+        res.status(201).json({ message: "Course updated successfully" })
+    } catch (error) {
+        res.status(500).json({ errors: "Error in course updating" })
+        console.log("Error in course updating", error);
+    }
+}
+
+// course deletion
+export const deleteCourse = async (req, res) => {
+    const { courseId } = req.params;
+
+    try {
+        const course = await Course.findOneAndDelete({
+            _id: courseId,
+        })
+        if (!course) {
+            return res.status(404).json({ error: "Course not found" })
+        }
+        res.status(200).json({ message: "Course deleted successfully" })
+    } catch (error) {
+        res.status(500).json({ errors: "Error in course deletion" })
+        console.log("Error in course deleting", error);
+    }
+
+}
+
+// All courses
+export const getCourse = async (req, res) => {
+    try {
+        const courses = await Course.find({});
+        res.status(201).json({ courses })
+    } catch (error) {
+        res.status(500).json({ errors: "Error in getting courses" })
+        console.log("Error to get courses", error);
+    }
+}
+
+// Targeting particular course
+export const courseDetails = async (req, res) => {
+    const { courseId } = req.params;
+    try {
+        const course = await Course.findById({})
+        if (!course) {
+            return res.status(404).json({ error: "Course not found " })
+        }
+        res.status(200).json({course})
+    } catch (error) {
+        res.status(500).json({ errors: "Error in getting course details" })
+        console.log("Error in course details", error)
     }
 }
