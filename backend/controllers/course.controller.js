@@ -4,6 +4,7 @@ import { Purchase } from "../models/purchase.model.js";
 
 // course creation
 export const createCourse = async (req, res) => {
+    const adminId = req.adminId;
     const { title, description, price } = req.body;
     try {
         if (!title || !description || !price) {
@@ -33,6 +34,7 @@ export const createCourse = async (req, res) => {
                 public_id: cloud_response.public_id,
                 url: cloud_response.secure_url,
             },
+            creatorId: adminId
         }
         const course = await Course.create(courseData);
         res.json({
@@ -48,12 +50,18 @@ export const createCourse = async (req, res) => {
 
 // course updation
 export const updateCourse = async (req, res) => {
+    const adminId = req.adminId
     const { courseId } = req.params;
     const { title, description, price, image } = req.body;
 
     try {
+        const courseSearch = await Course.findById(courseId);
+        if (!courseSearch) {
+            return res.status(404).json({ errors: "Course not found" });
+        }
         const course = await Course.updateOne({
-            _id: courseId
+            _id: courseId,
+            creatorId: adminId,
         }, {
             title,
             description,
@@ -63,7 +71,7 @@ export const updateCourse = async (req, res) => {
                 url: image?.url,
             }
         })
-        res.status(201).json({ message: "Course updated successfully" })
+        res.status(201).json({ message: "Course updated successfully", course })
     } catch (error) {
         res.status(500).json({ errors: "Error in course updating" })
         console.log("Error in course updating", error);
@@ -73,10 +81,12 @@ export const updateCourse = async (req, res) => {
 // course deletion
 export const deleteCourse = async (req, res) => {
     const { courseId } = req.params;
+    const adminId = req.adminId;
 
     try {
         const course = await Course.findOneAndDelete({
             _id: courseId,
+            creatorId: adminId,
         })
         if (!course) {
             return res.status(404).json({ error: "Course not found" })

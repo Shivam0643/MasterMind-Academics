@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import jwt from "jsonwebtoken";
 import { Purchase } from "../models/purchase.model.js";
+import { Course } from "../models/course.model.js";
 
 // signup
 export const signup = async (req, res) => {
@@ -75,6 +76,9 @@ export const login = async (req, res) => {
 // logout
 export const logout = async (req, res) => {
     try {
+        if (!req.cookies.jwt) {
+            return res.status(401).json({ errors: "Kindly login first" })
+        }
         res.clearCookie("jwt");
         res.status(200).json({ message: "Logged out successfully" })
     } catch (error) {
