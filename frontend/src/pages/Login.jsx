@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { LuEyeClosed, LuEye } from "react-icons/lu";
+import { Link } from 'react-router-dom';
+import { AiOutlineUserAdd } from "react-icons/ai";
 
 function Login() {
   const [pass, setPass] = useState(false);
@@ -11,15 +13,15 @@ function Login() {
 
   return (
     <>
-      <div className="flex flex-col bg-black h-screen transition-all duration-500">
+      <div className="flex flex-col bg-black h-screen transition-all duration-500 gap-10 md:gap-0">
         {/* Navbar */}
         <div>
           <Navbar />
         </div>
 
         {/* Login Form */}
-        <div className="flex justify-center items-center h-full">
-          <form className="flex flex-col bg-black text-white w-full max-w-md p-4 rounded-md space-y-16">
+        <div className="flex justify-center items-center md:h-full">
+          <form className="flex flex-col bg-black text-white w-full max-w-md p-4 rounded-md space-y-10">
             <h1 className="text-3xl font-semibold font-mono">Sign In</h1>
             <div className="flex flex-col gap-10">
               {/* Email Field */}
@@ -55,11 +57,19 @@ function Login() {
               <div className="w-full flex justify-end items-center">
                 <button
                   type="submit"
-                  className="bg-[#24cfa6] px-4 py-1 rounded-full text-black font-semibold font-mono"
+                  className="bg-[#24cfa6] hover:bg-[#2bf1c3] duration-500 px-4 py-1 rounded-full text-black font-semibold font-mono"
                 >
                   Continue
                 </button>
               </div>
+            </div>
+            <div className='flex justify-center items-center w-full gap-2'>
+              <div className='border border-gray-500 w-full h-0'></div>
+              <span className='text-gray-300'>or</span>
+              <div className='border border-gray-500 w-full h-0'></div>
+            </div>
+            <div className='flex justify-center items-center'>
+              <Link to={'/signup'} className='flex justify-center items-center gap-4 border border-gray-500 py-2 md:py-4 rounded-full w-full text-base md:text-lg tracking-wide hover:scale-105 duration-500 cursor-pointer'><AiOutlineUserAdd className='text-xl md:text-2xl' />Create a New Account</Link>
             </div>
           </form>
         </div>

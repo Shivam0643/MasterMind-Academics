@@ -3,6 +3,7 @@ import '../App.css';
 import { HiMenuAlt4 } from "react-icons/hi";
 import { RxCross2 } from "react-icons/rx";
 import { IoCallOutline } from "react-icons/io5";
+import { Link } from 'react-router-dom';
 
 function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -13,7 +14,7 @@ function Navbar() {
     };
 
     return (
-        <div className="w-full flex justify-between items-center py-4 px-6 sm:px-20 bg-transparent text-white">
+        <div className="w-full flex justify-between items-center py-4 px-6 sm:px-20 bg-transparent text-white transition-all duration-500">
             <div className="flex justify-center items-center gap-2">
                 <img src="/logo.webp" alt="logo" className="w-6" />
                 <h1 className="font-mono">Sheryians Coding School</h1>
@@ -40,7 +41,7 @@ function Navbar() {
                         Live Course
                     </li>
                     <li className="cursor-pointer">Request Callback</li>
-                    <button className="bg-[#24cfa6] px-6 py-1 rounded-md text-black">Sign In</button>
+                    <Link to={'/login'} className="bg-[#24cfa6] px-6 py-1 rounded-md text-black">Sign In</Link>
                 </ul>
             </div>
 
