@@ -12,84 +12,58 @@ function SignUp() {
 
     return (
         <>
-            <div className="relative min-h-screen bg-black">
-                {/* Background Image */}
-                <div className='hidden md:flex'>
-
-                    <img
-                        src="/bg1.svg"
-                        alt="Background Illustration"
-                        className="absolute inset-0 w-full h-full object-cover z-0"
-                    />
-                </div>
-
+            <div className="flex flex-col bg-black h-screen transition-all duration-500 gap-4 md:gap-0">
                 {/* Navbar */}
-                <div className="absolute top-0 w-full z-10 backdrop-blur-md">
+                <div className='relative z-10'>
                     <Navbar />
                 </div>
-
-                {/* Sign-Up Form */}
-                <div className="flex justify-center items-center min-h-screen z-10 relative">
-                    <form className=" text-white w-full max-w-md p-6 rounded-lg shadow-lg space-y-8 backdrop-blur-sm">
-                        {/* Header */}
-                        <div className="">
+                <div className='md:flex hidden'>
+                    <img src="/bg1.svg" alt="" className='absolute md:-top-[17rem] w-full object-contain' />
+                </div>
+                {/* Login Form */}
+                <div className="flex justify-center items-center md:h-full relative">
+                    <form className="flex flex-col text-white w-full max-w-md p-4 rounded-md space-y-4 md:space-y-10 ">
+                        <div className='flex flex-col flex-nowrap gap-1'>
                             <h1 className="text-3xl font-semibold font-mono">Sign Up</h1>
-                            <p className="text-gray-400 mt-2">
-                                Already have an account?{' '}
-                                <Link to="/login" className="text-blue-500 hover:underline">
-                                    Sign in
-                                </Link>
-                            </p>
+                            <p className='flex flex-nowrap text-gray-500 text-sm gap-1'>Already have an account? <Link to={'/login'} className='font-mono text-blue-600 cursor-pointer'>Sign in</Link></p>
                         </div>
-
-                        {/* Form Fields */}
-                        <div className="space-y-6">
+                        <div className="flex flex-col gap-8 md:gap-10">
                             {/* First Name */}
-                            <div>
-                                <label className="block text-gray-400 text-sm mb-1">
-                                    First Name
-                                </label>
+                            <div className="flex flex-col space-y-2 ">
+                                <span className="text-gray-400 text-sm">First Name</span>
                                 <input
                                     type="text"
                                     placeholder="Enter your first name"
-                                    className="w-full py-2 px-4 bg-[#1d1d1d] border-b border-gray-500 rounded  transition-all duration-300"
+                                    className="py-2 px-4 bg-[#1d1d1d] border-b border-gray-500 rounded text-lg md:text-sm transition-all duration-500"
                                 />
                             </div>
-
                             {/* Last Name */}
-                            <div>
-                                <label className="block text-gray-400 text-sm mb-1">
-                                    Last Name
-                                </label>
+                            <div className="flex flex-col space-y-2 ">
+                                <span className="text-gray-400 text-sm">Last Name</span>
                                 <input
                                     type="text"
                                     placeholder="Enter your last name"
-                                    className="w-full py-2 px-4 bg-[#1d1d1d] border-b border-gray-500 rounded f transition-all duration-300"
+                                    className="py-2 px-4 bg-[#1d1d1d] border-b border-gray-500 rounded text-lg md:text-sm transition-all duration-500"
                                 />
                             </div>
-
-                            {/* Email */}
-                            <div>
-                                <label className="block text-gray-400 text-sm mb-1">
-                                    Email Address
-                                </label>
+                            {/* Email Field */}
+                            <div className="flex flex-col space-y-2 ">
+                                <span className="text-gray-400 text-sm">Email address</span>
                                 <input
-                                    type="email"
+                                    type="text"
                                     placeholder="Enter your email address"
-                                    className="w-full py-2 px-4 bg-[#1d1d1d] border-b border-gray-500 rounded  transition-all duration-300"
+                                    className="py-2 px-4 bg-[#1d1d1d] border-b border-gray-500 rounded text-lg md:text-sm transition-all duration-500"
                                 />
                             </div>
 
-                            {/* Password */}
-                            <div>
-                                <label className="block text-gray-400 text-sm mb-1">
-                                    Password
-                                </label>
+                            {/* Password Field */}
+                            <div className="flex flex-col space-y-2 ">
+                                <span className="text-gray-400 text-sm">Password</span>
                                 <div className="relative">
                                     <input
                                         type={pass ? 'text' : 'password'}
-                                        placeholder="Enter your password"
-                                        className="w-full py-2 px-4 bg-[#1d1d1d] border-b border-gray-500 rounded  transition-all duration-300"
+                                        placeholder="Enter your password here"
+                                        className="py-2 px-4 bg-[#1d1d1d] border-b border-gray-500 rounded text-lg md:text-sm w-full transition-all duration-500"
                                     />
                                     <button
                                         type="button"
@@ -100,16 +74,16 @@ function SignUp() {
                                     </button>
                                 </div>
                             </div>
-                        </div>
 
-                        {/* Submit Button */}
-                        <div className="text-center">
-                            <button
-                                type="submit"
-                                className="w-full bg-[#24cfa6] hover:bg-[#2bf1c3] py-2 rounded-full text-black font-semibold text-lg transition-all duration-300"
-                            >
-                                Continue
-                            </button>
+                            {/* Continue Button */}
+                            <div className="w-full flex justify-end items-center">
+                                <button
+                                    type="submit"
+                                    className="bg-[#24cfa6] hover:bg-[#2bf1c3] duration-500 px-4 py-1 rounded-full text-black font-semibold font-mono"
+                                >
+                                    Continue
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
