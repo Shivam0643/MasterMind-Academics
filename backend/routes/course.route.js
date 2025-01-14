@@ -13,4 +13,4 @@ router.get('/:courseId', courseDetails);
 
 router.post('/buy/:courseId', userMiddleware, buyCourse);
 
-export default router;
+export default router; 

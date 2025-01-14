@@ -11,10 +11,10 @@ export const signup = async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
 
     const userSchema = z.object({
-        firstName: z.string().min(3, { message: "First name must be atleast 3 char long" }),
-        lastName: z.string().min(3, { message: "Last name must be atleast 3 char long" }),
+        firstName: z.string().min(3, { message: "First name must be atleast 3 char long, " }),
+        lastName: z.string().min(3, { message: "Last name must be atleast 3 char long, " }),
         email: z.string().email(),
-        password: z.string().min(6, { message: "password must be atleast 6 char long" }),
+        password: z.string().min(6, { message: "password must be atleast 6 char long " }),
     })
 
     const validateData = userSchema.safeParse(req.body);

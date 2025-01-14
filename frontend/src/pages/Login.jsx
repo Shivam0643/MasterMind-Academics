@@ -1,10 +1,46 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { LuEyeClosed, LuEye } from "react-icons/lu";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AiOutlineUserAdd } from "react-icons/ai";
+import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [errorMessage, setErrorMessage] = useState('')
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+
+    e.preventDefault();
+
+    try {
+      const response = await axios.post("http://localhost:3000/api/v1/user/login", {
+        email,
+        password,
+      }, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      console.log("Login successfully", response.data);
+      toast.success(response.data.message)
+      localStorage.setItem("user", JSON.stringify(response.data.token));
+      navigate("/")
+    } catch (error) {
+      if (error.response) {
+        setErrorMessage(error.response.data.errors || "Failed to Login")
+      }
+    }
+
+  }
+
+
   const [pass, setPass] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -21,16 +57,18 @@ function Login() {
 
         {/* Login Form */}
         <div className="flex justify-center items-center md:h-full">
-          <form className="flex flex-col bg-black text-white w-full max-w-md p-4 rounded-md space-y-10">
+          <form onSubmit={handleSubmit} className="flex flex-col bg-black text-white w-full max-w-md p-4 rounded-md space-y-10">
             <h1 className="text-3xl font-semibold font-mono">Sign In</h1>
             <div className="flex flex-col gap-10">
               {/* Email Field */}
               <div className="flex flex-col space-y-2">
                 <span className="text-gray-400 text-sm">Email address</span>
                 <input
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
                   type="text"
                   placeholder="Enter your email address"
-                  className="py-2 px-4 bg-[#1d1d1d] border-b border-gray-500 rounded text-lg md:text-sm transition-all duration-500"
+                  className="py-1 px-2 md:py-2 md:px-4 bg-[#1d1d1d] border-b border-gray-500 rounded text-sm transition-all duration-500"
                 />
               </div>
 
@@ -39,9 +77,11 @@ function Login() {
                 <span className="text-gray-400 text-sm">Password</span>
                 <div className="relative">
                   <input
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
                     type={pass ? 'text' : 'password'}
                     placeholder="Enter your password here"
-                    className="py-2 px-4 bg-[#1d1d1d] border-b border-gray-500 rounded text-lg md:text-sm w-full transition-all duration-500"
+                    className="py-1 px-2 md:py-2 md:px-4 bg-[#1d1d1d] border-b border-gray-500 rounded text-sm w-full transition-all duration-500"
                   />
                   <button
                     type="button"
@@ -52,7 +92,11 @@ function Login() {
                   </button>
                 </div>
               </div>
-
+              {errorMessage && (
+                <div className=' text-red-500 text-center transition-all duration-500 md:text-base text-sm'>
+                  {errorMessage}
+                </div>
+              )}
               {/* Continue Button */}
               <div className="w-full flex justify-end items-center">
                 <button

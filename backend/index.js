@@ -1,4 +1,5 @@
 import express from "express";
+import cors from 'cors';
 import dotenv from 'dotenv'
 import mongoose from "mongoose";
 import { v2 as cloudinary } from 'cloudinary';
@@ -10,6 +11,13 @@ import cookieParser from "cookie-parser";
 
 const app = express();
 dotenv.config();
+
+app.use(cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+}));
 
 // middleware
 app.use(express.json());
