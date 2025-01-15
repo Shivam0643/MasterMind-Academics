@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 import CountUp from 'react-countup';
-import Courses from './Courses';
+// import Courses from './Courses';
 
 function Home() {
     return (
@@ -75,9 +75,10 @@ function Home() {
                     <div className='text-white text-xl md:text-4xl md:max-w-3xl  text-center font-bol font-mono  md:py-20 px-4 absolute md:relative md:bottom-0 -bottom-10 ' >
                         <p>we do whatever it takes to help you <span className='text-[#24cfa6]'>understand the concepts</span></p>
                     </div>
-                    <div className='w-full px-10'>
+                    {/* <div className='w-full  bg-none'>
+                    <h1 className='pb-10 px-10 text-4xl font-bold font-mono text-white'>Courses Offered.</h1>
                         <Courses />
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </>

@@ -44,34 +44,46 @@ export const login = async (req, res) => {
     const { email, password } = req.body;
 
     try {
+        // Find user by email
         const user = await User.findOne({ email: email });
-        const isPasswordCorrect = await bcrypt.compare(password, user.password);
-
-        if (!user || !isPasswordCorrect) {
-            return res.status(403).json({ errors: "Invalid credentials" })
+        if (!user) {
+            return res.status(403).json({ errors: "Invalid credentials" });
         }
 
-        // jwt code 
-        const token = jwt.sign({
-            id: user._id,
-        }, config.JWT_USER_PASSWORD,
-            { expiresIn: "1d" });
+        // Compare password
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+        if (!isPasswordCorrect) {
+            return res.status(403).json({ errors: "Invalid credentials" });
+        }
 
+        // Generate JWT
+        const token = jwt.sign(
+            { id: user._id },
+            config.JWT_USER_PASSWORD,
+            { expiresIn: "1d" }
+        );
+
+        // Set cookie
         const cookieOptions = {
-            expires: new Date(Date.now() + 24 * 60 * 60 * 1000), //1/day
+            expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSites: "Strict" //prevent from CSRF attack
-        }
+            sameSite: "Strict", // Prevent CSRF
+        };
         res.cookie("jwt", token, cookieOptions);
 
-
-        res.status(201).json({ message: "Login successfully", user, token });
+        // Send response
+        res.status(201).json({
+            message: "Login successfully",
+            user,
+            token,
+        });
     } catch (error) {
-        res.status(500).json({ errors: "Error in login" })
-        console.log("Error in login", error);
+        res.status(500).json({ errors: "Error in login" });
+        console.error("Error in login:", error);
     }
-}
+};
+
 
 // logout
 export const logout = async (req, res) => {

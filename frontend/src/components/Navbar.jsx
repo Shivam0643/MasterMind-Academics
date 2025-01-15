@@ -54,7 +54,7 @@ function Navbar() {
         <div className="w-full flex justify-between items-center py-4 px-6 sm:px-20 bg-transparent text-white transition-all duration-500">
             <div className="flex justify-center items-center gap-2">
                 <img src="/logo.webp" alt="logo" className="w-6" />
-                <h1 className="font-mono">Sheryians Coding School</h1>
+                <Link to={'/'} className="font-mono cursor-pointer">Sheryians Coding School</Link>
             </div>
 
             {/* Hamburger Icon (visible on small devices) */}
@@ -68,11 +68,11 @@ function Navbar() {
             {/* Normal Menu (visible only on medium and larger screens) */}
             <div className="hidden md:flex justify-center items-center space-x-10 tracking-tight">
                 <ul className="capitalize flex justify-center items-center space-x-10 tracking-tight">
-                    <li className="cursor-pointer">Home</li>
-                    <li className="cursor-pointer">Courses</li>
-                    <li className="wiggle font-mono text-red-500 font-semibold tracking-wide cursor-pointer animate 1s ease-in-out infinite">
+                    <Link to={'/'} className="cursor-pointer">Home</Link>
+                    <Link to={'/courses'} className="cursor-pointer">Courses</Link>
+                    <Link to={'/livecourse'} className="wiggle font-mono text-red-500 font-semibold tracking-wide cursor-pointer animate 1s ease-in-out infinite">
                         Live Course
-                    </li>
+                    </Link>
                     <li className="cursor-pointer">Request Callback</li>
                     {isLoggedIn ? (
                         // Show Logout button if user is logged in

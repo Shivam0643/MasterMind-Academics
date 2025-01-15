@@ -9,13 +9,10 @@ import toast, { Toaster } from 'react-hot-toast';
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const [errorMessage, setErrorMessage] = useState('')
-
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
 
     try {
@@ -25,21 +22,30 @@ function Login() {
       }, {
         withCredentials: true,
         headers: {
-          "Content-Type": "application/json"
-        }
-      })
+          "Content-Type": "application/json",
+        },
+      });
+
       console.log("Login successfully", response.data);
-      toast.success(response.data.message)
-      localStorage.setItem("user", JSON.stringify(response.data.token));
-      navigate("/")
+      toast.success(response.data.message);
+
+      // Save the user token and other data in localStorage
+      const userData = {
+        token: response.data.token, // Token from server
+        email: response.data.user.email, // Example additional data
+      };
+      localStorage.setItem("user", JSON.stringify(userData)); // Save as a JSON string
+
+      navigate("/"); // Redirect to the home page
     } catch (error) {
+      console.error("Login error:", error);
       if (error.response) {
-        setErrorMessage(error.response.data.errors || "Failed to Login")
+        setErrorMessage(error.response.data.message || "Failed to Login");
+      } else {
+        setErrorMessage("An error occurred. Please try again.");
       }
     }
-
-  }
-
+  };
 
   const [pass, setPass] = useState(false);
 
@@ -69,6 +75,7 @@ function Login() {
                   type="text"
                   placeholder="Enter your email address"
                   className="py-1 px-2 md:py-2 md:px-4 bg-[#1d1d1d] border-b border-gray-500 rounded text-sm transition-all duration-500"
+                  required
                 />
               </div>
 
@@ -82,6 +89,7 @@ function Login() {
                     type={pass ? 'text' : 'password'}
                     placeholder="Enter your password here"
                     className="py-1 px-2 md:py-2 md:px-4 bg-[#1d1d1d] border-b border-gray-500 rounded text-sm w-full transition-all duration-500"
+                    required
                   />
                   <button
                     type="button"
@@ -93,7 +101,7 @@ function Login() {
                 </div>
               </div>
               {errorMessage && (
-                <div className=' text-red-500 text-center transition-all duration-500 md:text-base text-sm'>
+                <div className="text-red-500 text-center transition-all duration-500 md:text-base text-sm">
                   {errorMessage}
                 </div>
               )}
@@ -107,13 +115,19 @@ function Login() {
                 </button>
               </div>
             </div>
-            <div className='flex justify-center items-center w-full gap-2'>
-              <div className='border border-gray-500 w-full h-0'></div>
-              <span className='text-gray-300'>or</span>
-              <div className='border border-gray-500 w-full h-0'></div>
+            <div className="flex justify-center items-center w-full gap-2">
+              <div className="border border-gray-500 w-full h-0"></div>
+              <span className="text-gray-300">or</span>
+              <div className="border border-gray-500 w-full h-0"></div>
             </div>
-            <div className='flex justify-center items-center'>
-              <Link to={'/signup'} className='flex justify-center items-center gap-4 border border-gray-500 py-2 md:py-4 rounded-full w-full text-base md:text-lg tracking-wide hover:scale-105 duration-500 cursor-pointer'><AiOutlineUserAdd className='text-xl md:text-2xl' />Create a New Account</Link>
+            <div className="flex justify-center items-center">
+              <Link
+                to={'/signup'}
+                className="flex justify-center items-center gap-4 border border-gray-500 py-2 md:py-4 rounded-full w-full text-base md:text-lg tracking-wide hover:scale-105 duration-500 cursor-pointer"
+              >
+                <AiOutlineUserAdd className="text-xl md:text-2xl" />
+                Create a New Account
+              </Link>
             </div>
           </form>
         </div>
