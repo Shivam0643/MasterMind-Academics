@@ -3,11 +3,12 @@ import '../App.css';
 import { HiMenuAlt4 } from "react-icons/hi";
 import { RxCross2 } from "react-icons/rx";
 import { IoCallOutline } from "react-icons/io5";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 
 function Navbar() {
+    const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false);
     const [sign, setSign] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -33,7 +34,7 @@ function Navbar() {
             // Update state and redirect to login page
             setIsLoggedIn(false);
             setSign(false); // Ensure the button shows "Sign In"
-            window.location.href = "/login"; // Redirect to login page
+            navigate('/login') // Redirect to login page
         } catch (error) {
             console.error("Error in logout", error);
             toast.error(error.response?.data?.errors || "Error in logging out");
@@ -70,7 +71,7 @@ function Navbar() {
                 <ul className="capitalize flex justify-center items-center space-x-10 tracking-tight">
                     <Link to={'/'} className="cursor-pointer">Home</Link>
                     <Link to={'/courses'} className="cursor-pointer">Courses</Link>
-                    <Link to={'/livecourse'} className="wiggle font-mono text-red-500 font-semibold tracking-wide cursor-pointer animate 1s ease-in-out infinite">
+                    <Link to={'/livecourses'} className="wiggle font-mono text-red-500 font-semibold tracking-wide cursor-pointer animate 1s ease-in-out infinite">
                         Live Course
                     </Link>
                     <li className="cursor-pointer">Request Callback</li>
@@ -108,11 +109,11 @@ function Navbar() {
                 </div>
                 <hr />
                 <ul className="flex flex-col justify-center space-y-4 py-10 px-10 text-gray-400 text-2xl">
-                    <li className="cursor-pointer">Home</li>
-                    <li className="cursor-pointer">Courses</li>
-                    <li className="wiggle font-mono text-red-500 font-semibold tracking-wide cursor-pointer animate 1s ease-in-out infinite">
+                    <Link to={'/'} className="cursor-pointer">Home</Link>
+                    <Link to={'/courses'} className="cursor-pointer">Courses</Link>
+                    <Link to={'/livecourses'} className="wiggle font-mono text-red-500 font-semibold tracking-wide cursor-pointer animate 1s ease-in-out infinite">
                         Live Course
-                    </li>
+                    </Link>
                     {isLoggedIn ? (
                         <li onClick={() => {
                             handleLogout();

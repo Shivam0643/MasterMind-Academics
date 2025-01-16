@@ -10,8 +10,17 @@ import { Toaster } from 'react-hot-toast'
 import Buy from './pages/Buy';
 import CourseDetail from './pages/CourseDetail';
 import Purchases from './pages/Purchases';
+import LiveCourse from './pages/LiveCourse';
+import AdminSignup from './Admin/AdminSignup';
+import AdminLogin from './Admin/AdminLogin';
+import Dashboard from './Admin/Dashboard';
+import CreateCourse from './Admin/CreateCourse';
+import UpdateCourse from './Admin/UpdateCourse';
+import OurCourses from './Admin/OurCourses';
+
 
 function App() {
+
   const router = createBrowserRouter(
     [
       {
@@ -46,6 +55,37 @@ function App() {
         path: '/purchases',
         element: <Purchases />
       },
+      {
+        path: '/livecourses',
+        element: <LiveCourse />
+      },
+
+
+      // Admin Routes
+      {
+        path: '/admin/signup',
+        element: <AdminSignup />
+      },
+      {
+        path: '/admin/login',
+        element: <AdminLogin />
+      },
+      {
+        path: '/admin/dashboard',
+        element: <Dashboard />
+      },
+      {
+        path: '/admin/createcourse',
+        element: <CreateCourse />
+      },
+      {
+        path: '/admin/updatecourse/:id',
+        element: <UpdateCourse />
+      },
+      {
+        path: '/admin/ourcourses',
+        element: <OurCourses />
+      }
     ]
   )
 
