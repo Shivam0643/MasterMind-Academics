@@ -30,28 +30,28 @@ function Dashboard() {
             {/* Sidebar */}
             <div className="w-64 bg-[#171717] h-full flex flex-col space-y-6 px-4 py-6">
                 <h1 className="text-2xl font-bold text-center">Admin Panel</h1>
-                <nav className="flex flex-col space-y-4">
+                <nav className="flex flex-col space-y-4 ">
                     <Link
                         to="/"
-                        className="flex items-center space-x-2 p-2 hover:bg-[#24cfa6] rounded"
+                        className="flex items-center space-x-2 p-2 hover:bg-[#24cfa6] rounded hover:text-black font-semibold"
                     >
                         <FaHome /> <span>Home</span>
                     </Link>
                     <Link
                         to="/admin/ourcourses"
-                        className="flex items-center space-x-2 p-2 hover:bg-[#24cfa6] rounded"
+                        className="flex items-center space-x-2 p-2 hover:bg-[#24cfa6] rounded hover:text-black font-semibold"
                     >
                         <FaBook /> <span>Our Courses</span>
                     </Link>
                     <Link
                         to="/admin/createcourse"
-                        className="flex items-center space-x-2 p-2 hover:bg-[#24cfa6] rounded"
+                        className="flex items-center space-x-2 p-2 hover:bg-[#24cfa6] rounded hover:text-black font-semibold"
                     >
                         <FaPlusCircle /> <span>Create Course</span>
                     </Link>
                     <button
                         onClick={handleLogout}
-                        className="flex items-center space-x-2 p-2 hover:bg-[#24cfa6] rounded"
+                        className="flex items-center space-x-2 p-2 hover:bg-red-600 rounded  font-semibold"
                     >
                         <FaSignOutAlt /> <span>Logout</span>
                     </button>

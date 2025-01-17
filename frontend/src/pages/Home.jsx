@@ -1,7 +1,9 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 import CountUp from 'react-countup';
-// import Courses from './Courses';
+import { Link } from 'react-router-dom';
+import FeaturedCourses from './FeaturedCourses';
+import Footer from '../components/Footer';
 
 function Home() {
     return (
@@ -38,9 +40,9 @@ function Home() {
                             </div>
 
                             {/* Button */}
-                            <button className="mt-12 bg-[#24cfa6] text-base md:text-xl font-semibold px-6 py-2 md:px-8 md:py-2 rounded-md hover:bg-[#24cfa7ea] transition-all duration-200">
+                            <Link to={'/courses'} className="mt-12 bg-[#24cfa6] text-base md:text-xl font-semibold px-6 py-2 md:px-8 md:py-2 rounded-md hover:bg-[#24cfa7ea] transition-all duration-200">
                                 Check Courses - Make an Impact
-                            </button>
+                            </Link>
 
                             {/* Spacer */}
                             <div className="mt-20"></div> {/* Add this line to control the space between the text and the counters */}
@@ -72,13 +74,26 @@ function Home() {
 
                         </div>
                     </div>
-                    <div className='text-white text-xl md:text-4xl md:max-w-3xl  text-center font-bol font-mono  md:py-20 px-4 absolute md:relative md:bottom-0 -bottom-10 ' >
+                    <div className='text-white text-xl md:text-4xl md:max-w-3xl  text-center font-bol font-mono px-4 space-y-16' >
+                        <img src="learn.png" alt="learn" className='border border-white rounded-xl' />
                         <p>we do whatever it takes to help you <span className='text-[#24cfa6]'>understand the concepts</span></p>
                     </div>
-                    {/* <div className='w-full  bg-none'>
-                    <h1 className='pb-10 px-10 text-4xl font-bold font-mono text-white'>Courses Offered.</h1>
-                        <Courses />
-                    </div> */}
+                    <div className='w-full py-36 '>
+                        <h1 className='pb-4 md:pb-10 px-6 md:px-20 text-2xl md:text-4xl font-bold font-mono text-white'>Courses Offered.</h1>
+                        <FeaturedCourses />
+                    </div>
+
+                    {/* last section */}
+                    <div className='flex flex-col justify-center items-center text-white  w-full py-32 space-y-20'>
+                        <p className='font-mono text-5xl max-w-3xl text-center'>Top <span className='text-[#24cfa6]'>companies</span> our students working with</p>
+                        <img src="companies.webp" alt="companies" className='max-w-7xl' />
+                        <Link to={'/courses'} className='bg-[#24cfa6] px-4 py-2 text-xl text-black rounded font-semibold font-mono'>Explore Courses</Link>
+                    </div>
+
+                    {/* footer */}
+                    <div className='border-t w-full'>
+                    <Footer />
+                    </div>
                 </div>
             </div>
         </>

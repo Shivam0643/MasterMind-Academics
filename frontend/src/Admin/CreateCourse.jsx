@@ -59,7 +59,7 @@ function CreateCourse() {
     return (
         <div className="p-6 bg-[#0c0c0c] text-white min-h-screen">
             <h1 className="text-3xl font-bold mb-6">Create New Course</h1>
-            <form onSubmit={handleCreateCourse}>
+            <form onSubmit={handleCreateCourse} className=''>
                 <div className="mb-4">
                     <label htmlFor="title" className="block text-lg font-medium">Course Title</label>
                     <input
@@ -78,9 +78,10 @@ function CreateCourse() {
                         id="description"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                        className="mt-2 p-3 w-full bg-[#171717] border border-[#24cfa6] rounded text-white focus:outline-none"
+                        className="mt-2 p-3 w-full max-h-32 bg-[#171717] overflow-hidden text-ellipsis border border-[#24cfa6] rounded text-white focus:outline-none"
                         placeholder="Enter course description"
                     />
+
                 </div>
 
                 <div className="mb-4">
@@ -110,7 +111,7 @@ function CreateCourse() {
 
                 <button
                     type="submit"
-                    className="bg-[#24cfa6] hover:bg-[#1f9e83] text-white px-6 py-3 rounded transition-all"
+                    className="bg-[#24cfa6] hover:bg-[#1f9e83] text-black font-semibold px-6 py-3 rounded transition-all"
                 >
                     Create Course
                 </button>

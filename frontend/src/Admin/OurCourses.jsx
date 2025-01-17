@@ -78,18 +78,20 @@ function OurCourses() {
       {/* Loading Spinner */}
       {loading ? (
         <div className="flex justify-center items-center h-[50vh]">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#24cfa6]"></div>
+          <div className="loader"></div>
         </div>
       ) : courses.length === 0 ? (
         <p className="text-center text-lg">No courses found. Please add some courses.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-500">
           {courses.map((course) => (
             <div
               key={course._id}
-              className="bg-[#171717] p-4 rounded shadow hover:shadow-lg transition-all"
+              className="bg-[#171717] p-4 rounded shadow hover:shadow-lg transition-all duration-500"
             >
-              <img src={course.image.url} alt="img" />
+              <div className="flex justify-center">
+                <img src={course.image.url} alt="img" className="h-56" />
+              </div>
               <h3 className="text-xl font-bold mb-2">{course.title}</h3>
               <p className="mb-2">{course.description}</p>
               <p className="text-[#24cfa6] font-bold mb-4">₹{course.price}</p>

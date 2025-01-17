@@ -53,10 +53,14 @@ function Navbar() {
 
     return (
         <div className="w-full flex justify-between items-center py-4 px-6 sm:px-20 bg-transparent text-white transition-all duration-500">
-            <div className="flex justify-center items-center gap-2">
-                <img src="/logo.webp" alt="logo" className="w-6" />
-                <Link to={'/'} className="font-mono cursor-pointer">Sheryians Coding School</Link>
-            </div>
+            <Link to={'/'} className="flex justify-center items-center gap-2 cursor-pointer">
+                {/* <img src="/logo.webp" alt="logo" className="w-6" /> */}
+                <div className='text-3xl font-bold'>
+                    <span>M</span>
+                    <span className='text-[#24cfa6]'>A</span>
+                </div>
+                <span className="tracking-wider font-semibold">MasterMind Academix</span>
+            </Link>
 
             {/* Hamburger Icon (visible on small devices) */}
             <div className="sm:hidden flex justify-center items-center gap-2">

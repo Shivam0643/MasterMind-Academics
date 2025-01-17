@@ -68,7 +68,7 @@ function CourseDetail() {
                                 <img
                                     src={course.image.url}
                                     alt={course.title}
-                                    className="w-full h-60  md:h-96 object-cover rounded-lg"
+                                    className="w-full h-60  md:h-96 object-cover rounded-xl border-white border bg-black"
                                 />
                             ) : (
                                 <div className="h-60 md:h-96 bg-gray-700 flex justify-center items-center rounded-lg w-full">
