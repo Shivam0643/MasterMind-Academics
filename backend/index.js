@@ -14,11 +14,14 @@ dotenv.config();
 
 // Configure CORS to allow the frontend URL dynamically
 const allowedOrigins = [
-    process.env.FRONTEND_URL,
-    "http://localhost:5173", // for local development
-    "https://mastermind-academix-1.onrender.com/" // for production
+    process.env.FRONTEND_URL,   // The dynamic frontend URL from environment variable
+    "http://localhost:5173",    // Local development URL
 ];
-// Add more origins if needed
+
+// Allow all origins in development
+if (process.env.NODE_ENV === 'development') {
+    allowedOrigins.push('*'); // This will accept any origin in development
+}
 
 app.use(cors({
     origin: (origin, callback) => {
@@ -40,6 +43,9 @@ app.use(fileUpload({
     useTempFiles: true,
     tempFileDir: '/tmp/'
 }));
+
+// Handle preflight requests for all routes
+app.options('*', cors()); // Enable preflight for all routes
 
 const PORT = process.env.PORT || 4000;
 const DB_URI = process.env.MONGO_URI;
