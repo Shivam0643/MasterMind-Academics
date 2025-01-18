@@ -8,7 +8,7 @@ import Footer from '../components/Footer';
 function Home() {
     return (
         <>
-            <div className='relative h-full '>
+            <div className='relative h-full bg-[#0c0c0c]'>
 
                 <div className="fixed z-10 w-full backdrop-blur-sm">
                     {/* Navbar */}
@@ -75,24 +75,24 @@ function Home() {
                         </div>
                     </div>
                     <div className='text-white text-xl md:text-4xl md:max-w-3xl  text-center font-bol font-mono px-4 space-y-16' >
-                        <img src="learn.png" alt="learn" className='border border-white rounded-xl' />
+                        <img src="learn.png" alt="learn" className='border border-white rounded-xl shadow-lg' />
                         <p>we do whatever it takes to help you <span className='text-[#24cfa6]'>understand the concepts</span></p>
                     </div>
-                    <div className='w-full py-36 '>
+                    <div className='w-full pt-20 pb-10 md:py-36 '>
                         <h1 className='pb-4 md:pb-10 px-6 md:px-20 text-2xl md:text-4xl font-bold font-mono text-white'>Courses Offered.</h1>
                         <FeaturedCourses />
                     </div>
 
                     {/* last section */}
-                    <div className='flex flex-col justify-center items-center text-white  w-full py-32 space-y-20'>
-                        <p className='font-mono text-5xl max-w-3xl text-center'>Top <span className='text-[#24cfa6]'>companies</span> our students working with</p>
-                        <img src="companies.webp" alt="companies" className='max-w-7xl' />
-                        <Link to={'/courses'} className='bg-[#24cfa6] px-4 py-2 text-xl text-black rounded font-semibold font-mono'>Explore Courses</Link>
+                    <div className='flex flex-col justify-center items-center text-white  w-full py-10 space-y-20'>
+                        <p className='font-mono text-2xl md:text-5xl max-w-xs md:max-w-3xl text-center px-4'>Top <span className='text-[#24cfa6]'>companies</span> our students working with</p>
+                        <img src="companies.webp" alt="companies" className='md:max-w-7xl px-10' />
+                        <Link to={'/courses'} className='bg-[#24cfa6] px-4 py-1 text-base md:px-4 md:py-2 md:text-xl text-black rounded font-semibold font-mono'>Explore Courses</Link>
                     </div>
 
                     {/* footer */}
                     <div className='border-t w-full'>
-                    <Footer />
+                        <Footer />
                     </div>
                 </div>
             </div>
