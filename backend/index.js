@@ -1,10 +1,10 @@
 import express from "express";
 import cors from 'cors';
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
 import mongoose from "mongoose";
 import { v2 as cloudinary } from 'cloudinary';
-import courseRoute from './routes/course.route.js'
-import userRoute from './routes/user.route.js'
+import courseRoute from './routes/course.route.js';
+import userRoute from './routes/user.route.js';
 import adminRoute from './routes/admin.route.js';
 import fileUpload from "express-fileupload";
 import cookieParser from "cookie-parser";
@@ -12,8 +12,22 @@ import cookieParser from "cookie-parser";
 const app = express();
 dotenv.config();
 
+// Configure CORS to allow the frontend URL dynamically
+const allowedOrigins = [
+    process.env.FRONTEND_URL,
+    "http://localhost:5173", // for local development
+    "https://mastermind-academix-1.onrender.com/" // for production
+];
+// Add more origins if needed
+
 app.use(cors({
-    origin: process.env.FRONTEND_URL,
+    origin: (origin, callback) => {
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+            callback(null, true); // Allow the request
+        } else {
+            callback(new Error("Not allowed by CORS")); // Reject the request
+        }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -25,11 +39,10 @@ app.use(cookieParser());
 app.use(fileUpload({
     useTempFiles: true,
     tempFileDir: '/tmp/'
-}))
-
+}));
 
 const PORT = process.env.PORT || 4000;
-const DB_URI = process.env.MONGO_URI
+const DB_URI = process.env.MONGO_URI;
 
 try {
     await mongoose.connect(DB_URI);
@@ -42,9 +55,9 @@ try {
 app.use("/api/v1/course", courseRoute);
 app.use("/api/v1/course/courses", courseRoute);
 app.use("/api/v1/user", userRoute);
-app.use('/api/v1/admin', adminRoute)
+app.use('/api/v1/admin', adminRoute);
 
-// cloudinary configuration code
+// Cloudinary configuration
 cloudinary.config({
     cloud_name: process.env.cloud_name,
     api_key: process.env.api_key,
@@ -53,4 +66,4 @@ cloudinary.config({
 
 app.listen(PORT, () => {
     console.log(`Server is running at port ${PORT}`);
-})
+});
