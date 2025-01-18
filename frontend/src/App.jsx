@@ -13,7 +13,6 @@ import AdminSignup from './Admin/AdminSignup';
 import AdminLogin from './Admin/AdminLogin';
 import Dashboard from './Admin/Dashboard';
 import CreateCourse from './Admin/CreateCourse';
-import UpdateCourse from './Admin/UpdateCourse';
 import OurCourses from './Admin/OurCourses';
 
 
@@ -67,10 +66,6 @@ function App() {
       {
         path: '/admin/createcourse',
         element: <CreateCourse />
-      },
-      {
-        path: '/admin/updatecourse/:id',
-        element: <UpdateCourse />
       },
       {
         path: '/admin/ourcourses',
