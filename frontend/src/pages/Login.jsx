@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AiOutlineUserAdd } from "react-icons/ai";
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
+import { BACKEND_URL } from '../utils/utils';
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3000/api/v1/user/login", {
+      const response = await axios.post(`${BACKEND_URL}/user/login`, {
         email,
         password,
       }, {

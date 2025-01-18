@@ -4,6 +4,7 @@ import { LuEyeClosed, LuEye } from "react-icons/lu";
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { BACKEND_URL } from '../utils/utils';
 
 function AdminSignup() {
 
@@ -20,7 +21,7 @@ function AdminSignup() {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:3000/api/v1/admin/signup', {
+            const response = await axios.post(`${BACKEND_URL}/admin/signup`, {
                 firstName,
                 lastName,
                 email,

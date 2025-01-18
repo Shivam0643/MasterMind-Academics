@@ -7,9 +7,7 @@ import Error from './pages/Error';
 import SignUp from './pages/SignUp';
 import Courses from './pages/Courses';
 import { Toaster } from 'react-hot-toast'
-import Buy from './pages/Buy';
 import CourseDetail from './pages/CourseDetail';
-import Purchases from './pages/Purchases';
 import LiveCourse from './pages/LiveCourse';
 import AdminSignup from './Admin/AdminSignup';
 import AdminLogin from './Admin/AdminLogin';
@@ -46,14 +44,6 @@ function App() {
       {
         path: '/courses/:courseId', // Dynamic route for course details
         element: <CourseDetail />,
-      },
-      {
-        path: '/courses/buy/:courseId', // Corrected the path for Buy
-        element: <Buy />
-      },
-      {
-        path: '/purchases',
-        element: <Purchases />
       },
       {
         path: '/livecourses',

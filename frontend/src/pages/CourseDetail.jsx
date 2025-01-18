@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
 import { toast } from 'react-hot-toast'; // Import toast from react-hot-toast
+import { BACKEND_URL } from '../utils/utils';
 
 function CourseDetail() {
     const { courseId } = useParams(); // Get the dynamic course ID from the URL
@@ -13,7 +14,7 @@ function CourseDetail() {
         const fetchCourseDetail = async () => {
             try {
                 // Simulate a delay (like in Courses component)
-                const response = await axios.get(`http://localhost:3000/api/v1/course/courses/${courseId}`);
+                const response = await axios.get(`${BACKEND_URL}/course/courses/${courseId}`);
                 setTimeout(() => {
                     setCourse(response.data.course); // Set course data
                     setLoading(false); // End loading state

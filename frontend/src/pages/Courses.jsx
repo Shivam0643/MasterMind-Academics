@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar';
 import { FaArrowDown } from "react-icons/fa6";
 import toast from 'react-hot-toast';
 import Footer from '../components/Footer';
+import { BACKEND_URL } from '../utils/utils';
 
 function Courses() {
     const [courses, setCourses] = useState([]);
@@ -18,7 +19,7 @@ function Courses() {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/api/v1/course/courses", {
+                const response = await axios.get(`${BACKEND_URL}/course/courses`, {
                     withCredentials: true,
                 });
                 // Simulate a delay of 2 seconds

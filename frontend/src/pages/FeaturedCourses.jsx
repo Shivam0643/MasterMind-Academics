@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
 import toast from 'react-hot-toast';
+import { BACKEND_URL } from '../utils/utils';
 
 function FeaturedCourses() {
     const [courses, setCourses] = useState([]);
@@ -16,7 +17,7 @@ function FeaturedCourses() {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/api/v1/course/courses", {
+                const response = await axios.get(`${BACKEND_URL}/course/courses`, {
                     withCredentials: true,
                 });
                 // Simulate a delay of 1 second before updating the state

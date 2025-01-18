@@ -6,6 +6,7 @@ import { IoCallOutline } from "react-icons/io5";
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import { BACKEND_URL } from '../utils/utils';
 
 function Navbar() {
     const navigate = useNavigate()
@@ -22,7 +23,7 @@ function Navbar() {
     // Handle user logout
     const handleLogout = async () => {
         try {
-            const response = await axios.get("http://localhost:3000/api/v1/user/logout", {
+            const response = await axios.get(`${BACKEND_URL}/user/logout`, {
                 withCredentials: true,
             });
             console.log(response.data);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { FaTrash } from "react-icons/fa";
+import { BACKEND_URL } from "../utils/utils";
 
 function OurCourses() {
   const [courses, setCourses] = useState([]);
@@ -18,7 +19,7 @@ function OurCourses() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/v1/course/courses", {
+        const response = await axios.get(`${BACKEND_URL}/course/courses`, {
           withCredentials: true,
         });
         // Simulate a delay of 2 seconds before updating the state
@@ -48,7 +49,7 @@ function OurCourses() {
     const token = admin.token;
     console.log("Token found:", token);  // This will print the token to the console for debugging
     try {
-      const response = await axios.delete(`http://localhost:3000/api/v1/course/delete/${id}`, {
+      const response = await axios.delete(`${BACKEND_URL}/course/delete/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

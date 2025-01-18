@@ -3,13 +3,14 @@ import { FaHome, FaBook, FaPlusCircle, FaSignOutAlt } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { BACKEND_URL } from "../utils/utils";
 
 function Dashboard() {
     const navigate = useNavigate();
     // Handle user logout
     const handleLogout = async () => {
         try {
-            const response = await axios.get("http://localhost:3000/api/v1/admin/logout", {
+            const response = await axios.get(`${BACKEND_URL}/admin/logout`, {
                 withCredentials: true,
             });
             console.log(response.data);

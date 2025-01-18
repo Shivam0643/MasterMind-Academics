@@ -4,6 +4,7 @@ import { LuEyeClosed, LuEye } from "react-icons/lu";
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { BACKEND_URL } from '../utils/utils';
 
 function SignUp() {
 
@@ -20,7 +21,7 @@ function SignUp() {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:3000/api/v1/user/signup', {
+            const response = await axios.post(`${BACKEND_URL}/user/signup`, {
                 firstName,
                 lastName,
                 email,
@@ -115,7 +116,7 @@ function SignUp() {
                                     />
 
                                     <button
-                                       type='button'
+                                        type='button'
                                         onClick={togglePasswordVisibility}
                                         className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xl text-gray-400 hover:text-white transition-all duration-300"
                                     >
