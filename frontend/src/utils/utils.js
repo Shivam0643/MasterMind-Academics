@@ -1,1 +1,1 @@
-export const BACKEND_URL = "https://mastermind-academix-1.onrender.com/";
+export const BACKEND_URL = "https://mastermind-academix-1.onrender.com/api/v1";
