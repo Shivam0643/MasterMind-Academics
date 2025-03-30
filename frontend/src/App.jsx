@@ -14,6 +14,7 @@ import AdminLogin from './Admin/AdminLogin';
 import Dashboard from './Admin/Dashboard';
 import CreateCourse from './Admin/CreateCourse';
 import OurCourses from './Admin/OurCourses';
+import Purchases from './pages/Purchases';
 
 
 function App() {
@@ -47,6 +48,10 @@ function App() {
       {
         path: '/livecourses',
         element: <LiveCourse />
+      },
+      {
+        path: '/purchase',
+        element: <Purchases />
       },
 
 

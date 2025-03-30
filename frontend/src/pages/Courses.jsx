@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
 import { FaArrowDown } from "react-icons/fa6";
@@ -9,6 +9,7 @@ import { BACKEND_URL } from '../utils/utils';
 
 function Courses() {
     const [courses, setCourses] = useState([]);
+    const [purchasedCourses, setPurchasedCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
@@ -22,29 +23,54 @@ function Courses() {
                 const response = await axios.get(`${BACKEND_URL}/course/courses`, {
                     withCredentials: true,
                 });
-                // Simulate a delay of 2 seconds
-                setTimeout(() => {
-                    setCourses(response.data.courses); // Assuming response data has a "courses" key.
-                    setLoading(false);
-                }, 2000);
+
+                setCourses(response.data.courses); // Assuming response data has a "courses" key.
             } catch (error) {
                 console.log("Error in fetching courses", error);
                 toast.error("Failed to fetch courses. Please try again.");
             }
         };
 
-        fetchCourses();
-    }, []);
+        const fetchPurchasedCourses = async () => {
+            if (!isAuthenticated) return;
+
+            try {
+                const response = await axios.get(`${BACKEND_URL}/course/purchased`, {
+                    headers: {
+                        Authorization: `Bearer ${user.token}`,
+                    },
+                    withCredentials: true,
+                });
+
+                if (response.data.purchasedCourses) {
+                    setPurchasedCourses(response.data.purchasedCourses.map(course => course._id));
+                }
+            } catch (error) {
+                console.log("Error in fetching purchased courses", error);
+            }
+        };
+
+        const fetchData = async () => {
+            await fetchCourses();
+            if (isAuthenticated) {
+                await fetchPurchasedCourses();
+            }
+            setLoading(false);
+        };
+
+        fetchData();
+    }, [isAuthenticated, user?.token]);
 
     const handleViewDetails = (courseId) => {
         if (isAuthenticated) {
-            // Navigate to the course details page if authenticated
             navigate(`/courses/${courseId}`);
         } else {
-            // Show a message or prompt to log in
             toast.error("Please login to view course details.");
         }
     };
+
+    // Filter out purchased courses
+    const filteredCourses = courses.filter(course => !purchasedCourses.includes(course._id));
 
     return (
         <div className="bg-[#0c0c0c] h-screen">
@@ -72,9 +98,9 @@ function Courses() {
                                 Courses which do work <FaArrowDown />
                             </p>
                             <div className="grid md:grid-cols-3 gap-10 md:gap-20">
-                                {courses.map((course) => (
+                                {filteredCourses.map((course) => (
                                     <div key={course._id} className="flex flex-col gap-4">
-                                        <div className="bg-[#171717] text-white flex flex-col flex-nowrap h-96 rounded-2xl ">
+                                        <div onClick={() => handleViewDetails(course._id)} className="bg-[#171717] text-white flex flex-col flex-nowrap h-96 rounded-2xl cursor-pointer ">
                                             <img
                                                 src={course.image.url}
                                                 alt={course.title}

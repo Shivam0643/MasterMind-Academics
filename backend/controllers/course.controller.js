@@ -1,5 +1,6 @@
 import { Course } from "../models/course.model.js";
 import { v2 as cloudinary } from "cloudinary";
+import { User } from "../models/user.model.js";
 import { Purchase } from "../models/purchase.model.js";
 
 // course creation
@@ -118,16 +119,17 @@ export const deleteCourse = async (req, res) => {
 export const getCourse = async (req, res) => {
     try {
         const courses = await Course.find({});
-        res.status(201).json({ courses })
+        res.status(200).json({ courses }); // Use 200 for successful GET request
     } catch (error) {
-        res.status(500).json({ errors: "Error in getting courses" })
-        console.log("Error to get courses", error);
+        console.error("Error fetching courses:", error.stack); // Log full error stack
+        res.status(500).json({ errors: "Error in getting courses" });
     }
 }
 
 // Targeting particular course
 export const courseDetails = async (req, res) => {
     const { courseId } = req.params;
+    console.log("📌 Course ID from URL:", courseId);
     try {
         const course = await Course.findById(courseId)
         if (!course) {
@@ -141,25 +143,97 @@ export const courseDetails = async (req, res) => {
 }
 
 // buy course
-export const buyCourse = async (req, res) => {
-    const { userId } = req;
-    const { courseId } = req.params;
+// export const buyCourse = async (req, res) => {
+//     try {
+//         const { userId } = req; // Check if this is correctly populated
+//         const { courseId } = req.params;
 
+//         if (!userId) {
+//             return res.status(400).json({ error: "User ID is required" });
+//         }
+
+//         const course = await Course.findById(courseId);
+//         if (!course) {
+//             return res.status(404).json({ error: "Course not found" });
+//         }
+
+//         // Check if the user has already purchased the course
+//         const existingPurchase = await Purchase.findOne({ userId, courseId });
+//         if (existingPurchase) {
+//             return res.status(400).json({ error: "User has already purchased this course" });
+//         }
+
+//         // Save the purchase
+//         const newPurchase = new Purchase({ userId, courseId });
+//         await newPurchase.save();
+
+//         return res.status(201).json({ message: "Course purchased successfully", newPurchase });
+//     } catch (error) {
+//         console.error("Error in course buying:", error);
+//         return res.status(500).json({ error: "Error in course buying" });
+//     }
+// };
+export const purchaseCourse = async (req, res) => {
     try {
+        const { userId, courseId } = req.body;
+
+        if (!userId || !courseId) {
+            return res.status(400).json({ error: "User ID and Course ID are required" });
+        }
+
+        // Check if course exists
         const course = await Course.findById(courseId);
         if (!course) {
-            return res.status(404).json({ errors: "Course not found" });
-        }
-        const existingPurchase = await Purchase.findOne({ userId, courseId })
-        if (existingPurchase) {
-            return res.status(400).json({ error: "User has already purchased this course" });
+            return res.status(404).json({ error: "Course not found" });
         }
 
-        const newPurchase = new Purchase({ userId, courseId })
-        await newPurchase.save();
-        res.status(201).json({ message: "Course purchased successfully", newPurchase });
+        // Check if user already purchased the course
+        const existingPurchase = await Purchase.findOne({ userId, courseId });
+        if (existingPurchase) {
+            return res.status(400).json({ error: "Course already purchased" });
+        }
+
+        // Create a new purchase entry
+        const purchase = new Purchase({ userId, courseId });
+        await purchase.save();
+
+        // Update user's purchased courses
+        await User.findByIdAndUpdate(userId, { $push: { purchasedCourses: purchase._id } });
+
+        res.json({ message: "Purchase successful!", purchase });
     } catch (error) {
-        res.status(500).json({ errors: "Error in course buying" })
-        console.log("Error in course buying", error);
+        console.error("Error purchasing course:", error);
+        res.status(500).json({ error: "Internal Server Error" });
     }
-}
+};
+
+
+// Fetch purchased courses for the logged-in user
+export const getPurchasedCourses = async (req, res) => {
+    const userId = req.userId; // Extract userId from middleware (Ensure it's set correctly)
+
+    console.log("📌 User ID:", userId);
+
+    if (!userId) {
+        return res.status(400).json({ error: "User ID is missing from request" });
+    }
+
+    try {
+        // Fetch purchases and populate course details
+        const purchases = await Purchase.find({ userId }).populate("courseId");
+
+        if (!purchases.length) {
+            return res.status(200).json({ message: "No purchased courses found", courses: [] });
+        }
+
+        // Extract purchased courses
+        const purchasedCourses = purchases.map(purchase => purchase.courseId);
+        res.status(200).json({ purchasedCourses });
+    } catch (error) {
+        console.error("❌ Error fetching purchased courses:", error);
+        res.status(500).json({ errors: "Error in getting course details" });
+    }
+};
+
+
+

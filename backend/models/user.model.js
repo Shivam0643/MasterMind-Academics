@@ -18,6 +18,12 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-})
+    purchasedCourses: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Purchase", // This refers to the purchaseSchema
+        }
+    ]
+});
 
 export const User = mongoose.model("User", userSchema);
