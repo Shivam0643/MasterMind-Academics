@@ -50,6 +50,13 @@ function Dashboard() {
                     >
                         <FaPlusCircle /> <span>Create Course</span>
                     </Link>
+                    <Link
+                        to="/admin/lectures"
+                        className="flex items-center space-x-2 p-2 hover:bg-[#24cfa6] rounded hover:text-black font-semibold"
+                    >
+                        <FaBook /> <span>Manage Lectures</span>
+                    </Link>
+
                     <button
                         onClick={handleLogout}
                         className="flex items-center space-x-2 p-2 hover:bg-red-600 rounded  font-semibold"

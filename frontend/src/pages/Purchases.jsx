@@ -4,10 +4,12 @@ import { BACKEND_URL } from "../utils/utils";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { FaArrowDown } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 const Purchases = () => {
     const [purchasedCourses, setPurchasedCourses] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchPurchasedCourses = async () => {
@@ -38,6 +40,11 @@ const Purchases = () => {
         fetchPurchasedCourses();
     }, []);
 
+    const handleCourseClick = (courseId) => {
+        // Redirect to the lectures page for this particular course
+        navigate(`/course/${courseId}/lectures`);
+    };
+
     return (
         <div className="bg-[#0c0c0c] min-h-screen">
             <Navbar />
@@ -63,7 +70,7 @@ const Purchases = () => {
                             </p>
                             <div className="py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {purchasedCourses.map((course) => (
-                                    <div key={course._id} className="bg-[#171717] p-4 rounded-2xl shadow-md cursor-pointer">
+                                    <div key={course._id} onClick={() => handleCourseClick(course._id)} className="bg-[#171717] p-4 rounded-2xl shadow-md cursor-pointer">
                                         {course.image?.url ? (
                                             <img
                                                 src={course.image.url}

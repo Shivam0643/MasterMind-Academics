@@ -8,22 +8,26 @@ import { jwtDecode } from "jwt-decode";
 
 function CourseDetail() {
     const { courseId } = useParams();
-    const navigate = useNavigate(); // ✅ Navigate hook
+    const navigate = useNavigate();
 
     const [course, setCourse] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isPurchased, setIsPurchased] = useState(false);
 
     useEffect(() => {
+        console.log("🔹 courseId from URL:", courseId); // ✅ Log courseId
+
         const fetchCourseDetail = async () => {
             try {
                 const response = await axios.get(`${BACKEND_URL}/course/courses/${courseId}`);
+                console.log("✅ Course API Response:", response.data);
+
                 setTimeout(() => {
-                    setCourse(response.data.course);
+                    setCourse(response.data); // ✅ Use response.data directly
                     setLoading(false);
                 }, 1000);
             } catch (error) {
-                console.error("Error fetching course details:", error);
+                console.error("❌ Error fetching course details:", error);
                 setLoading(false);
             }
         };
@@ -41,20 +45,22 @@ function CourseDetail() {
                     headers: { Authorization: `Bearer ${userData.token}` }
                 });
 
-                const purchasedCourses = res.data.purchasedCourses;
+                console.log("📌 Purchased Courses:", res.data.purchasedCourses);
 
-                // ✅ Check if this course is already purchased
+                const purchasedCourses = res.data.purchasedCourses || [];
+
+                // ✅ Check if course is purchased
                 if (purchasedCourses.some(course => course._id === courseId)) {
                     setIsPurchased(true);
                     navigate("/purchase"); // ✅ Redirect if purchased
                 }
             } catch (error) {
-                console.error("Error checking purchased courses:", error);
+                console.error("❌ Error checking purchased courses:", error);
             }
         };
 
         fetchCourseDetail();
-        checkPurchasedCourses(); // ✅ Check purchase status
+        checkPurchasedCourses();
 
     }, [courseId, navigate]);
 
@@ -90,7 +96,7 @@ function CourseDetail() {
             navigate("/purchase"); // ✅ Redirect to purchases after buying
 
         } catch (err) {
-            console.error("Purchase error:", err);
+            console.error("❌ Purchase error:", err);
             toast.error(err.response?.data?.message || "Course already purchased");
         }
     };
@@ -122,7 +128,7 @@ function CourseDetail() {
                             ) : (
                                 <button
                                     onClick={handleBuyNow}
-                                    className="bg-[#009560] rounded-lg w-56 md:w-64 text-white py-2 px-4 md:py-3 md:px-5 font-bold text-base md:text-lg text-center"
+                                    className="bg-[#009560] rounded-lg w-56 md:w-64  py-2 px-4 md:py-3 md:px-5 font-bold text-base md:text-lg text-center"
                                 >
                                     Buy Now - Start Learning
                                 </button>

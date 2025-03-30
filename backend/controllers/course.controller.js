@@ -2,6 +2,7 @@ import { Course } from "../models/course.model.js";
 import { v2 as cloudinary } from "cloudinary";
 import { User } from "../models/user.model.js";
 import { Purchase } from "../models/purchase.model.js";
+import { Lecture } from "../models/lecture.model.js";
 
 // course creation
 export const createCourse = async (req, res) => {
@@ -129,18 +130,38 @@ export const getCourse = async (req, res) => {
 // Targeting particular course
 export const courseDetails = async (req, res) => {
     const { courseId } = req.params;
-    console.log("📌 Course ID from URL:", courseId);
-    try {
-        const course = await Course.findById(courseId)
-        if (!course) {
-            return res.status(404).json({ error: "Course not found " })
-        }
-        res.status(200).json({ course })
-    } catch (error) {
-        res.status(500).json({ errors: "Error in getting course details" })
-        console.log("Error in course details", error)
+    console.log("📌 Received courseId:", courseId);
+
+    // ✅ Validate ObjectId format
+    if (!mongoose.Types.ObjectId.isValid(courseId)) {
+        return res.status(400).json({ error: "Invalid course ID format" });
     }
-}
+
+    try {
+        const course = await Course.findById(courseId);
+        if (!course) {
+            return res.status(404).json({ error: "Course not found" });
+        }
+
+        // ✅ Fetch associated lectures
+        const lectures = await Lecture.find({ courseId });
+
+        // Ensure title is returned in the response
+        res.status(200).json({
+            title: course.title,
+            description: course.description,
+            price: course.price,
+            image: course.image,
+            creatorId: course.creatorId,
+            lectures,
+        });
+    } catch (error) {
+        console.error("❌ Error fetching course details:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+
 
 // buy course
 // export const buyCourse = async (req, res) => {
@@ -235,18 +256,6 @@ export const getPurchasedCourses = async (req, res) => {
     }
 };
 
-// lectuers
-router.get("/:courseId/lectures", async (req, res) => {
-    try {
-        const course = await Course.findById(req.params.courseId);
-        if (!course) {
-            return res.status(404).json({ message: "Course not found" });
-        }
-        res.json({ lectures: course.lectures });
-    } catch (error) {
-        res.status(500).json({ message: "Server error" });
-    }
-});
 
 
 

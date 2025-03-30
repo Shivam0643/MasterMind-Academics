@@ -86,41 +86,56 @@ function Courses() {
                         </div>
                     ) : (
                         <>
-                            <div className="flex flex-col flex-nowrap pt-32 pb-10 md:pt-20 md:pb-20 space-y-6 md:space-y-10 transition-all duration-500">
-                                <p className="text-4xl md:text-7xl font-mono md:max-w-4xl md:text-start text-center">
-                                    We're not a <span className="text-[#24cfa6]">course factory.</span>
-                                </p>
-                                <p className="text-base md:text-2xl font-mono md:text-start text-center">
-                                    We focus on courses that really help.
-                                </p>
-                            </div>
-                            <p className="text-xl font-mono flex flex-nowrap gap-4 items-center md:justify-start justify-center py-10 w-full transition-all duration-500">
-                                Courses which do work <FaArrowDown />
-                            </p>
-                            <div className="grid md:grid-cols-3 gap-10 md:gap-20">
-                                {filteredCourses.map((course) => (
-                                    <div key={course._id} className="flex flex-col gap-4">
-                                        <div onClick={() => handleViewDetails(course._id)} className="bg-[#171717] text-white flex flex-col flex-nowrap h-96 rounded-2xl cursor-pointer ">
-                                            <img
-                                                src={course.image.url}
-                                                alt={course.title}
-                                                className="w-full h-64 object-cover rounded-t-2xl shadow-md"
-                                            />
-                                            <div className="flex flex-col justify-center px-6 py-4">
-                                                <span className="text-lg font-semibold">{course.title}</span>
-                                                <span className="text-sm text-gray-400">{course.description}</span>
-                                                <span className="text-lg font-bold mt-2">₹ {course.price}</span>
-                                            </div>
-                                        </div>
-                                        <button
-                                            onClick={() => handleViewDetails(course._id)}
-                                            className="bg-[#24cfa6] rounded-md text-black py-2 font-semibold text-lg text-center"
-                                        >
-                                            View Details
-                                        </button>
+                            {filteredCourses.length === 0 ? (
+                                <div className="text-center py-10 h-screen flex items-center justify-center">
+                                    <div className='flex flex-col flex-nowrap justify-center items-center'>
+                                        <p className="text-3xl font-mono ">
+                                            Thank you for purchasing all courses! 🎉
+                                        </p>
+                                        <p className="text-xl text-gray-400 mt-4">
+                                            You have access to all our premium content. Enjoy learning!
+                                        </p>
                                     </div>
-                                ))}
-                            </div>
+                                </div>
+                            ) : (
+                                <>
+                                    <div className="flex flex-col flex-nowrap pt-32 pb-10 md:pt-20 md:pb-20 space-y-6 md:space-y-10 transition-all duration-500">
+                                        <p className="text-4xl md:text-7xl font-mono md:max-w-4xl md:text-start text-center">
+                                            We're not a <span className="text-[#24cfa6]">course factory.</span>
+                                        </p>
+                                        <p className="text-base md:text-2xl font-mono md:text-start text-center">
+                                            We focus on courses that really help.
+                                        </p>
+                                    </div>
+                                    <p className="text-xl font-mono flex flex-nowrap gap-4 items-center md:justify-start justify-center py-10 w-full transition-all duration-500">
+                                        Courses which do work <FaArrowDown />
+                                    </p>
+                                    <div className="grid md:grid-cols-3 gap-10 md:gap-20">
+                                        {filteredCourses.map((course) => (
+                                            <div key={course._id} className="flex flex-col gap-4">
+                                                <div onClick={() => handleViewDetails(course._id)} className="bg-[#171717] text-white flex flex-col flex-nowrap h-96 rounded-2xl cursor-pointer ">
+                                                    <img
+                                                        src={course.image.url}
+                                                        alt={course.title}
+                                                        className="w-full h-64 object-cover rounded-t-2xl shadow-md"
+                                                    />
+                                                    <div className="flex flex-col justify-center px-6 py-4">
+                                                        <span className="text-lg font-semibold">{course.title}</span>
+                                                        <span className="text-sm text-gray-400">{course.description}</span>
+                                                        <span className="text-lg font-bold mt-2">₹ {course.price}</span>
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    onClick={() => handleViewDetails(course._id)}
+                                                    className="bg-[#24cfa6] rounded-md text-black py-2 font-semibold text-lg text-center"
+                                                >
+                                                    View Details
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </>
+                            )}
                         </>
                     )}
                 </div>

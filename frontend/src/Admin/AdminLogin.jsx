@@ -22,27 +22,24 @@ function AdminLogin() {
                 password,
             }, {
                 withCredentials: true,
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
             });
 
             console.log("Admin Login successful", response.data);
-            toast.success(response.data.message);
 
-            // ✅ Save admin token & role in localStorage
             const adminData = {
                 token: response.data.token,
                 email: response.data.admin.email,
-                role: "admin",  // Store role for route protection
+                role: "admin",
             };
             localStorage.setItem("admin", JSON.stringify(adminData));
 
-            // ✅ Add a small delay before navigating (fixes race condition)
-            setTimeout(() => {
-                navigate("/admin/dashboard", { replace: true });
-            }, 100);
+            // ✅ Verify immediately after setting
+            console.log("🔹 Stored in LocalStorage:", localStorage.getItem("admin"));
 
+            toast.success(response.data.message);
+
+            setTimeout(() => navigate("/admin/dashboard", { replace: true }), 100);
         } catch (error) {
             console.error("Login error:", error);
             setErrorMessage(error.response?.data?.message || "Failed to Login");

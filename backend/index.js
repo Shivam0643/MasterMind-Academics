@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import mongoose from "mongoose";
 import { v2 as cloudinary } from 'cloudinary';
 import courseRoute from './routes/course.route.js';
+import lectureRoute from './routes/lecture.route.js';
 import userRoute from './routes/user.route.js';
 import adminRoute from './routes/admin.route.js';
 import fileUpload from "express-fileupload";
@@ -60,6 +61,7 @@ try {
 // Defining routes
 app.use("/api/v1/course", courseRoute);
 app.use("/api/v1/course/courses", courseRoute);
+app.use("/api/v1/lectures", lectureRoute)
 app.use("/api/v1/user", userRoute);
 app.use('/api/v1/admin', adminRoute);
 

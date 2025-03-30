@@ -37,40 +37,43 @@ function OurCourses() {
 
   // Delete course
   const handleDelete = async (id) => {
-    // Check if the token exists in localStorage
     const admin = JSON.parse(localStorage.getItem("admin"));
+
     if (!admin || !admin.token) {
       console.log("Token not found in localStorage");
       toast.error("No token found, please log in.");
-      return; // Stop the function if token is not available
+      return;
     }
 
-    // Token found, proceed with the API request
     const token = admin.token;
-    console.log("Token found:", token);  // This will print the token to the console for debugging
+    console.log("Token used for deletion:", token);  // Make sure token is available
+
     try {
+
       const response = await axios.delete(`${BACKEND_URL}/course/delete/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
         withCredentials: true,
       });
+
+      console.log("Delete Response:", response.data);
       toast.success(response.data.message);
+
       const updatedCourses = courses.filter((course) => course._id !== id);
       setCourses(updatedCourses);
     } catch (error) {
-      console.log("Error in deleting course", error);
-
-      // Log the full error object to get better details about the error
+      console.error("Error in deleting course:", error);
       if (error.response) {
         console.error("Response error:", error.response);
         toast.error(error.response.data.errors || "Error in deleting course");
       } else {
-        // In case of no response (network issues or no internet), log a generic error
         toast.error("An unknown error occurred. Please try again later.");
       }
     }
   };
+
+
 
   return (
     <div className="p-6 bg-[#0c0c0c] text-white min-h-screen">

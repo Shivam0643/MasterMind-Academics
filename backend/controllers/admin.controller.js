@@ -42,42 +42,52 @@ export const login = async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        const admin = await Admin.findOne({ email: email });
-        const isPasswordCorrect = await bcrypt.compare(password, admin.password);
+        console.log("🔹 Login Attempt:", email);
 
-        if (!admin || !isPasswordCorrect) {
-            return res.status(403).json({ errors: "Invalid credentials" })
+        const admin = await Admin.findOne({ email: email });
+        if (!admin) {
+            console.log("❌ Admin not found");
+            return res.status(403).json({ errors: "Invalid credentials" });
         }
 
-        // jwt code 
-        const token = jwt.sign({
-            id: admin._id,
-        }, config.JWT_ADMIN_PASSWORD,
-            { expiresIn: "1d" });
+        const isPasswordCorrect = await bcrypt.compare(password, admin.password);
+        if (!isPasswordCorrect) {
+            console.log("❌ Incorrect Password");
+            return res.status(403).json({ errors: "Invalid credentials" });
+        }
+
+        // ✅ Generate JWT token
+        const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+
+        console.log("✅ Token Generated:", token);
 
         const cookieOptions = {
-            expires: new Date(Date.now() + 24 * 60 * 60 * 1000), //1/day
+            expires: new Date(Date.now() + 24 * 60 * 60 * 1000), //1 day
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSites: "Strict" //prevent from CSRF attack
-        }
+            sameSite: "Strict" // Prevent CSRF attack
+        };
+
+        // ✅ Set cookie
         res.cookie("jwt", token, cookieOptions);
 
+        console.log("✅ Cookie Set Successfully");
 
+        // ✅ Send response
         res.status(201).json({ message: "Login successfully", admin, token });
     } catch (error) {
-        res.status(500).json({ errors: "Error in login" })
-        console.log("Error in login", error);
+        console.error("❌ Error in login:", error);
+        res.status(500).json({ errors: "Error in login" });
     }
-}
+};
 
 // logout
 export const logout = async (req, res) => {
     try {
-        if (!req.cookies.jwt){
-            return res.status(401).json({errors:"Kindly login first"})
+        if (!req.cookies.jwt) {
+            return res.status(401).json({ errors: "Kindly login first" })
         }
-            res.clearCookie("jwt");
+        res.clearCookie("jwt");
         res.status(200).json({ message: "Logged out successfully" })
     } catch (error) {
         res.status(500).json({ errors: "Error in logout" });

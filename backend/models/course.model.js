@@ -23,10 +23,15 @@ const courseSchema = new mongoose.Schema({
             required: true
         }
     },
-    creatorId:{
-        type:mongoose.Types.ObjectId,
-        ref:"User",
-    }
-})
+    creatorId: {
+        type: mongoose.Types.ObjectId,
+        ref: "User",
+        required: true,  // Ensure a course is always linked to a creator
+    },
+    lectures: [{   // 🔥 New field to store lecture references
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Lecture",
+    }],
+});
 
 export const Course = mongoose.model("Course", courseSchema);
