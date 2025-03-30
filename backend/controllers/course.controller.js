@@ -3,6 +3,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { User } from "../models/user.model.js";
 import { Purchase } from "../models/purchase.model.js";
 import { Lecture } from "../models/lecture.model.js";
+import mongoose from "mongoose";
 
 // course creation
 export const createCourse = async (req, res) => {
