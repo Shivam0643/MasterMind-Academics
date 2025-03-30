@@ -15,6 +15,7 @@ import Dashboard from './Admin/Dashboard';
 import CreateCourse from './Admin/CreateCourse';
 import OurCourses from './Admin/OurCourses';
 import Purchases from './pages/Purchases';
+import ProtectedAdminRoute from './Admin/ProtectedAdminRoute';
 
 
 function App() {
@@ -55,26 +56,19 @@ function App() {
       },
 
 
-      // Admin Routes
+      // Admin Routes (Unprotected)
+      { path: '/admin/signup', element: <AdminSignup /> },
+      { path: '/admin/login', element: <AdminLogin /> },
+
+      // Protected Admin Routes
       {
-        path: '/admin/signup',
-        element: <AdminSignup />
-      },
-      {
-        path: '/admin/login',
-        element: <AdminLogin />
-      },
-      {
-        path: '/admin/dashboard',
-        element: <Dashboard />
-      },
-      {
-        path: '/admin/createcourse',
-        element: <CreateCourse />
-      },
-      {
-        path: '/admin/ourcourses',
-        element: <OurCourses />
+        path: '/admin/',
+        element: <ProtectedAdminRoute />, // Protect all admin routes
+        children: [
+          { path: 'dashboard', element: <Dashboard /> },
+          { path: 'createcourse', element: <CreateCourse /> },
+          { path: 'ourcourses', element: <OurCourses /> },
+        ]
       }
     ]
   )

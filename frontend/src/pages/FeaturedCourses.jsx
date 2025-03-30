@@ -4,6 +4,7 @@ import axios from 'axios';
 import Navbar from '../components/Navbar';
 import toast from 'react-hot-toast';
 import { BACKEND_URL } from '../utils/utils';
+import { FaArrowDown } from "react-icons/fa6";
 
 function FeaturedCourses() {
     const [courses, setCourses] = useState([]);
@@ -58,8 +59,8 @@ function FeaturedCourses() {
                         </div>
                     ) : (
                         <>
-                            <div className=" flex overflow-x-auto space-x-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-300 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-10">
-                                {courses.map((course) => (
+                            <div className="flex overflow-x-auto space-x-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-300 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-10">
+                                {courses.slice(0, 8).map((course) => (  // ✅ Limits to max 6 courses
                                     <div
                                         key={course._id}
                                         className="w-[300px] flex-shrink-0 md:flex-shrink md:w-[400px] flex flex-col gap-4 "
@@ -87,7 +88,11 @@ function FeaturedCourses() {
                                         </button>
                                     </div>
                                 ))}
+                                <div className='flex flex-col justify-center items-center'>
+                                    <Link to={'/courses'} className='bg-[#24cfa6] hover:scale-110 duration-300 px-4 py-1 text-base md:px-4 md:py-2 md:text-xl text-black rounded font-semibold font-mono flex flex-nowrap justify-center items-center gap-4'>Explore Courses <FaArrowDown className='-rotate-90' /> </Link>
+                                </div>
                             </div>
+
                         </>
                     )}
                 </div>

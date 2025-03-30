@@ -89,7 +89,7 @@ function Navbar() {
                 <ul className="capitalize flex justify-center items-center space-x-10 tracking-tight">
                     <Link to={"/"} className="cursor-pointer">Home</Link>
                     <Link to={"/courses"} className="cursor-pointer">Courses</Link>
-                    <Link to={"/purchase"} className="cursor-pointer">Purchses</Link>
+                    <Link to={"/purchase"} className="cursor-pointer">Purchased</Link>
                     <Link to={"/livecourses"} className="wiggle font-mono text-red-500 font-semibold tracking-wide cursor-pointer animate 1s ease-in-out infinite">
                         Live Course
                     </Link>

@@ -20,7 +20,7 @@ function Home() {
 
                     <div className="flex flex-col w-full items-center h-screen transition-all duration-200">
                         {/* Background Image */}
-                        <img src="/bg.svg" alt="Background Illustration" className="w-full " />
+                        <img src="/bg.svg" alt="Background Illustration" className="w-full" />
 
                         {/* Additional Content */}
                         <div className="absolute text-center max-w-7xl  flex flex-col py-44 md:justify-center items-center transition-all duration-200 px-4">
@@ -86,8 +86,8 @@ function Home() {
                     {/* last section */}
                     <div className='flex flex-col justify-center items-center text-white  w-full py-10 space-y-20'>
                         <p className='font-mono text-2xl md:text-5xl max-w-xs md:max-w-3xl text-center px-4'>Top <span className='text-[#24cfa6]'>companies</span> our students working with</p>
-                        <img src="companies.webp" alt="companies" className='md:max-w-7xl px-10' />
-                        <Link to={'/courses'} className='bg-[#24cfa6] px-4 py-1 text-base md:px-4 md:py-2 md:text-xl text-black rounded font-semibold font-mono'>Explore Courses</Link>
+                        <img src="companies.webp" alt="companies" className=' md:max-w-7xl px-10' />
+                       
                     </div>
 
                     {/* footer */}

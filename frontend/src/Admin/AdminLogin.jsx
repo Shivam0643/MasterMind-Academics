@@ -27,26 +27,28 @@ function AdminLogin() {
                 },
             });
 
-            console.log("Admin Login successfully", response.data);
+            console.log("Admin Login successful", response.data);
             toast.success(response.data.message);
 
-            // Save the user token and other data in localStorage
-            const userData = {
-                token: response.data.token, // Token from server
-                email: response.data.admin.email, // Example additional data
+            // ✅ Save admin token & role in localStorage
+            const adminData = {
+                token: response.data.token,
+                email: response.data.admin.email,
+                role: "admin",  // Store role for route protection
             };
-            localStorage.setItem("admin", JSON.stringify(userData)); // Save as a JSON string
-            navigate("/admin/dashboard"); // Redirect to the home page
+            localStorage.setItem("admin", JSON.stringify(adminData));
+
+            // ✅ Add a small delay before navigating (fixes race condition)
+            setTimeout(() => {
+                navigate("/admin/dashboard", { replace: true });
+            }, 100);
 
         } catch (error) {
             console.error("Login error:", error);
-            if (error.response) {
-                setErrorMessage(error.response.data.message || "Failed to Login");
-            } else {
-                setErrorMessage("An error occurred. Please try again.");
-            }
+            setErrorMessage(error.response?.data?.message || "Failed to Login");
         }
     };
+
 
     const [pass, setPass] = useState(false);
 

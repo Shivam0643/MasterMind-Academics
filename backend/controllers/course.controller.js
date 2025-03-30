@@ -235,5 +235,19 @@ export const getPurchasedCourses = async (req, res) => {
     }
 };
 
+// lectuers
+router.get("/:courseId/lectures", async (req, res) => {
+    try {
+        const course = await Course.findById(req.params.courseId);
+        if (!course) {
+            return res.status(404).json({ message: "Course not found" });
+        }
+        res.json({ lectures: course.lectures });
+    } catch (error) {
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
+
 
 
