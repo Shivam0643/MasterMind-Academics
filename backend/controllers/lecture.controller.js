@@ -27,12 +27,12 @@ export const addLecture = async (req, res) => {
 // Get all lectures for a course
 export const getLectures = async (req, res) => {
     const { courseId } = req.params;
-    console.log("📌 Fetching lectures for courseId:", courseId);
+    // console.log("📌 Fetching lectures for courseId:", courseId);
 
     try {
         const lectures = await Lecture.find({ course: new mongoose.Types.ObjectId(courseId) });
 
-        console.log("✅ Found lectures:", lectures);
+        // console.log("✅ Found lectures:", lectures);
         res.status(200).json({ lectures });
     } catch (error) {
         console.error("❌ Error fetching lectures:", error);

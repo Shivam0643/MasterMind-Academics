@@ -26,7 +26,7 @@ function Courses() {
 
                 setCourses(response.data.courses); // Assuming response data has a "courses" key.
             } catch (error) {
-                console.log("Error in fetching courses", error);
+                // console.log("Error in fetching courses", error);
                 toast.error("Failed to fetch courses. Please try again.");
             }
         };

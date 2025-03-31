@@ -56,6 +56,18 @@ function Dashboard() {
                     >
                         <FaBook /> <span>Manage Lectures</span>
                     </Link>
+                    <Link
+                        to="/admin/quizzes"
+                        className="flex items-center space-x-2 p-2 hover:bg-[#24cfa6] rounded hover:text-black font-semibold"
+                    >
+                        <FaBook /> <span>Quiz Management</span>
+                    </Link>
+                    <Link
+                        to="/admin/certificates"
+                        className="flex items-center space-x-2 p-2 hover:bg-[#24cfa6] rounded hover:text-black font-semibold"
+                    >
+                        <FaBook /> <span>Create Certificate</span>
+                    </Link>
 
                     <button
                         onClick={handleLogout}

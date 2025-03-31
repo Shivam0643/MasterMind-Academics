@@ -14,7 +14,7 @@ function Lectures() {
     const [video, setVideo] = useState("");
 
     useEffect(() => {
-        console.log("🔥 useEffect triggered with courseId:", courseId);
+        // console.log("🔥 useEffect triggered with courseId:", courseId);
         fetchCourses(); // ✅ Fetch courses when the component loads
 
         if (!courseId) {
@@ -37,7 +37,7 @@ function Lectures() {
         }
 
         try {
-            console.log("Fetching courses...");
+            // console.log("Fetching courses...");
             const response = await axios.get(`${BACKEND_URL}/course/courses`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -62,7 +62,7 @@ function Lectures() {
             return;
         }
 
-        console.log(`📚 Fetching lectures for courseId: ${courseId}`); // Debugging log
+        // console.log(`📚 Fetching lectures for courseId: ${courseId}`); // Debugging log
 
         const adminData = JSON.parse(localStorage.getItem("admin") || "{}");
         const token = adminData?.token;
@@ -80,7 +80,7 @@ function Lectures() {
                 },
             });
 
-            console.log("✅ API Response:", response.data); // Log API response
+            // console.log("✅ API Response:", response.data); // Log API response
 
             if (response.data.lectures) {
                 setLectures(response.data.lectures);
@@ -172,7 +172,7 @@ function Lectures() {
             toast.success("Lecture deleted successfully!");
             setLectures((prevLectures) => prevLectures.filter((lecture) => lecture._id !== lectureId));
         } catch (error) {
-            console.error("❌ Error Deleting Lecture:", error.response?.data);
+            // console.error("❌ Error Deleting Lecture:", error.response?.data);
             toast.error(error.response?.data?.message || "Failed to delete lecture.");
         }
     };

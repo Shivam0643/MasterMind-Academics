@@ -6,13 +6,16 @@ dotenv.config();
 function adminMiddleware(req, res, next) {
     console.log("🔹 Incoming Headers:", req.headers);
 
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    let token = req.cookies.jwt; // Check for token in cookies
+
+    if (!token && req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
+        token = req.headers.authorization.split(" ")[1]; // Extract token from Authorization header
+    }
+
+    if (!token) {
         console.log("❌ No Token Provided");
         return res.status(401).json({ errors: "No token provided" });
     }
-
-    const token = authHeader.split(" ")[1];
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -21,9 +24,8 @@ function adminMiddleware(req, res, next) {
         next();
     } catch (error) {
         console.error("❌ Invalid or Expired Token", error);
-        res.status(401).json({ errors: "Invalid token or expired token" });
+        res.status(401).json({ errors: "Invalid or expired token" });
     }
 }
-
 
 export default adminMiddleware;
