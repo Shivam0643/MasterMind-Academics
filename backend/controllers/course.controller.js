@@ -83,37 +83,24 @@ export const updateCourse = async (req, res) => {
 
 // course deletion
 export const deleteCourse = async (req, res) => {
-    const { courseId } = req.params;
-    const adminId = req.adminId;  // Admin ID from the middleware
-
     try {
-        // Log for debugging
-        console.log("Admin ID:", adminId);
-        console.log("Course ID:", courseId);
+        const { courseID } = req.params; // Extract courseID from URL parameters
+        console.log("🟢 Deleting course with ID:", courseID);
 
-        // Find and delete the course by courseId and ensure that it's created by the admin
-        const course = await Course.findOneAndDelete({
-            _id: courseId,
-            creatorId: adminId,  // Ensure the admin is the creator of the course
-        });
-
-        // Log the course for debugging
-        console.log("Course found for deletion:", course);
-
-        // If no course is found, return a 404 error
+        const course = await Course.findById(courseID);
         if (!course) {
-            return res.status(404).json({ error: "Course not found or you are not authorized to delete this course" });
+            return res.status(404).json({ error: "Course not found!" });
         }
 
-        // Return success response if course is deleted
-        res.status(200).json({ message: "Course deleted successfully" });
+        await Course.findByIdAndDelete(courseID);
+        return res.status(200).json({ message: "Course deleted successfully!" });
 
     } catch (error) {
-        // Return a 500 error for server issues
-        res.status(500).json({ error: "Error in course deletion" });
-        console.error("Error in course deleting", error);
+        console.error("❌ Error deleting course:", error);
+        res.status(500).json({ error: "Server error!" });
     }
 };
+
 
 
 

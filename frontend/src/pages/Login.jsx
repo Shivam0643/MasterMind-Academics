@@ -48,9 +48,11 @@ function Login() {
         // Add other necessary user data
       };
 
-      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("token", token); // ✅ Store token separately
+      localStorage.setItem("user", JSON.stringify(userData)); // Keep user details
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       toast.success(message || "Login successful");
+      console.log("Token saved:", localStorage.getItem("token"));
       navigate("/");
 
     } catch (error) {

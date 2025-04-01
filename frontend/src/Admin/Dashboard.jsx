@@ -1,5 +1,7 @@
 import React from "react";
 import { FaHome, FaBook, FaPlusCircle, FaSignOutAlt } from "react-icons/fa";
+import { MdOutlineVideoSettings } from "react-icons/md";
+import { MdManageHistory } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast";
@@ -54,19 +56,13 @@ function Dashboard() {
                         to="/admin/lectures"
                         className="flex items-center space-x-2 p-2 hover:bg-[#24cfa6] rounded hover:text-black font-semibold"
                     >
-                        <FaBook /> <span>Manage Lectures</span>
+                        <MdOutlineVideoSettings /> <span>Manage Lectures</span>
                     </Link>
                     <Link
                         to="/admin/quizzes"
                         className="flex items-center space-x-2 p-2 hover:bg-[#24cfa6] rounded hover:text-black font-semibold"
                     >
-                        <FaBook /> <span>Quiz Management</span>
-                    </Link>
-                    <Link
-                        to="/admin/certificates"
-                        className="flex items-center space-x-2 p-2 hover:bg-[#24cfa6] rounded hover:text-black font-semibold"
-                    >
-                        <FaBook /> <span>Create Certificate</span>
+                        <MdManageHistory /> <span>Quiz Management</span>
                     </Link>
 
                     <button

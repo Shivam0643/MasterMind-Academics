@@ -27,43 +27,40 @@ function Navbar() {
     // Handle user logout
     const handleLogout = async () => {
         try {
-            // Get user from localStorage
             const user = JSON.parse(localStorage.getItem("user"));
 
             if (!user || !user.token) {
-                console.warn("No user found in localStorage.");
+                console.warn("No user or token found in localStorage.");
                 toast.error("User not logged in");
-                navigate("/login");
                 return;
             }
 
             const token = user.token;
 
-            await axios.post(`${BACKEND_URL}/user/logout`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-                withCredentials: true,
-            });
+            await axios.post(
+                `${BACKEND_URL}/user/logout`,
+                {}, // No body needed
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    withCredentials: true, // Send cookies as well if needed
+                }
+            );
 
-            // Clear frontend storage and update state
+            // Clear user session
             localStorage.removeItem("user");
             delete axios.defaults.headers.common["Authorization"];
             setIsLoggedIn(false);
-
             toast.success("Logged out successfully");
             navigate("/login");
 
         } catch (error) {
-            // Handle errors gracefully
             console.error("Logout error:", error);
-            toast.success("Logged out successfully"); // Ensure toast message always appears
-            localStorage.removeItem("user");
-            delete axios.defaults.headers.common["Authorization"];
-            setIsLoggedIn(false);
-            navigate("/login");
+            toast.error("Logout failed. Please try again.");
         }
     };
+
 
 
     return (
@@ -120,6 +117,7 @@ function Navbar() {
                 <ul className="flex flex-col justify-center space-y-4 py-10 px-10 text-gray-400 text-2xl">
                     <Link to={"/"} className="cursor-pointer" onClick={() => setIsOpen(false)}>Home</Link>
                     <Link to={"/courses"} className="cursor-pointer" onClick={() => setIsOpen(false)}>Courses</Link>
+                    <Link to={"/purchase"} className="cursor-pointer" onClick={() => setIsOpen(false)}>Purchase  d</Link>
                     <Link to={"/livecourses"} className="wiggle font-mono text-red-500 font-semibold tracking-wide cursor-pointer animate 1s ease-in-out infinite" onClick={() => setIsOpen(false)}>
                         Live Course
                     </Link>

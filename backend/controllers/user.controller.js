@@ -78,16 +78,28 @@ export const login = async (req, res) => {
 // logout
 export const logout = async (req, res) => {
     try {
-        if (!req.cookies.jwt) {
-            return res.status(401).json({ errors: "Kindly login first" })
+        const authHeader = req.headers.authorization;
+        let token = null;
+
+        if (authHeader && authHeader.startsWith("Bearer ")) {
+            token = authHeader.split(" ")[1];
+        } else if (req.cookies.jwt) {
+            token = req.cookies.jwt;
         }
-        res.clearCookie("jwt");
-        res.status(200).json({ message: "Logged out successfully" })
+
+        if (!token) {
+            return res.status(401).json({ errors: "No token provided" });
+        }
+
+        res.clearCookie("jwt"); // Clear cookie if using cookies
+        res.status(200).json({ message: "Logged out successfully" });
+
     } catch (error) {
         res.status(500).json({ errors: "Error in logout" });
         console.log("Error in logout", error);
     }
-}
+};
+
 
 // purchases
 export const purchase = async (req, res) => {

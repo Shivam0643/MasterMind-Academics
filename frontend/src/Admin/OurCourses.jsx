@@ -39,6 +39,7 @@ function OurCourses() {
   const handleDelete = async (id) => {
     const admin = JSON.parse(localStorage.getItem("admin"));
 
+    // Check if token exists, else show error
     if (!admin || !admin.token) {
       console.log("Token not found in localStorage");
       toast.error("No token found, please log in.");
@@ -49,29 +50,31 @@ function OurCourses() {
     console.log("Token used for deletion:", token);  // Make sure token is available
 
     try {
-
+      // Sending delete request to backend with the Authorization header
       const response = await axios.delete(`${BACKEND_URL}/course/delete/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        withCredentials: true,
+        withCredentials: true, // Ensure that credentials are sent if needed
       });
 
       console.log("Delete Response:", response.data);
       toast.success(response.data.message);
 
-      const updatedCourses = courses.filter((course) => course._id !== id);
-      setCourses(updatedCourses);
+      // Remove deleted course from local state
+      setCourses(prevCourses => prevCourses.filter(course => course._id !== id));
+
     } catch (error) {
       console.error("Error in deleting course:", error);
       if (error.response) {
         console.error("Response error:", error.response);
-        toast.error(error.response.data.errors || "Error in deleting course");
+        toast.error(error.response.data.error || "Error in deleting course");
       } else {
         toast.error("An unknown error occurred. Please try again later.");
       }
     }
   };
+
 
 
 

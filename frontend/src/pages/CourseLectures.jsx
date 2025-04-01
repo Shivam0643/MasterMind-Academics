@@ -16,7 +16,7 @@ function CourseLectures() {
     const [quizUrl, setQuizUrl] = useState(null); // Store quiz URL
     const [loading, setLoading] = useState(true);
 
-    // Function to extract YouTube video ID
+    // Extract YouTube video ID
     const getYouTubeVideoId = (url) => {
         const regExp =
             /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/]+\/.*\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[^\s]*)/;
@@ -50,13 +50,30 @@ function CourseLectures() {
         };
 
         const fetchQuiz = async () => {
+            const token = localStorage.getItem("token");
+            console.log("Token before request:", token); // Debugging token
+
             try {
                 const response = await axios.get(`${BACKEND_URL}/quiz/${courseId}`, {
                     withCredentials: true,
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 });
-                setQuizUrl(response.data.quiz?.quizUrl || null);
+
+                console.log("Quiz fetched successfully:", response.data);
+
+                // Ensure correct response handling
+                if (response.data.quiz && response.data.quiz.quizUrl) {
+                    setQuizUrl(response.data.quiz.quizUrl); // Update the quiz URL state
+                    console.log("Quiz URL after setting state:", response.data.quiz.quizUrl);
+                } else {
+                    console.warn("Quiz URL not found in response");
+                    setQuizUrl(null);
+                }
             } catch (error) {
-                setQuizUrl(null);
+                console.error("Error fetching quiz:", error.response?.data || error);
+                toast.error("Failed to fetch quiz. Please try again.");
             }
         };
 
@@ -65,14 +82,22 @@ function CourseLectures() {
         fetchQuiz();
     }, [courseId]);
 
+    // Log quizUrl state updates
+    useEffect(() => {
+        console.log("Updated quizUrl state:", quizUrl);
+    }, [quizUrl]);
+
     const handleLectureClick = (videoUrl) => {
         window.open(videoUrl, "_blank");
     };
 
     const handleQuizClick = () => {
+        console.log("handleQuizClick triggered. Current quizUrl:", quizUrl);
+
         if (quizUrl) {
             window.open(quizUrl, "_blank");
         } else {
+            console.warn("Quiz URL is null! Showing toast error.");
             toast.error("No quiz found for this course!");
         }
     };
@@ -91,7 +116,6 @@ function CourseLectures() {
                     </div>
                 ) : (
                     <>
-
                         <div className="flex flex-col justify-center">
                             <div className="flex flex-col md:flex-row justify-between items-center">
                                 <div className="font-mono flex flex-col flex-nowrap pb-10 md:pb-20 space-y-6 md:space-y-10 transition-all duration-500">
@@ -102,7 +126,7 @@ function CourseLectures() {
                                         Learn and grow with these lectures <FaArrowDown />
                                     </p>
                                 </div>
-                                {/* Quiz Button (outside lecture cards) */}
+                                {/* Quiz Button */}
                                 <div className="flex justify-end  md:mt-44 sticky w-full md:w-auto">
                                     <button
                                         className="bg-[#24cfa6] font-semibold text-black py-2 px-6 rounded-lg flex flex-nowrap justify-center items-center"
@@ -149,7 +173,6 @@ function CourseLectures() {
                                 })}
                             </div>
                         </div>
-
                     </>
                 )}
             </div>

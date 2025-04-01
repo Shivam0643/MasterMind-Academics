@@ -15,9 +15,8 @@ import OurCourses from './Admin/OurCourses';
 import Purchases from './pages/Purchases';
 import ProtectedAdminRoute from './Admin/ProtectedAdminRoute';
 import Lectures from './Admin/Lectures';
-import CourseLectures from './pages/CourseLectures';  // Import the CourseLectures page
+import CourseLectures from './pages/CourseLectures'; 
 import QuizManagement from "./Admin/QuizManagement";
-import Certificate from "./Admin/Certificate";
 
 
 function App() {
@@ -73,7 +72,6 @@ function App() {
         { path: 'lectures', element: <Lectures /> },
         { path: 'ourcourses', element: <OurCourses /> },
         { path: "quizzes", element: <QuizManagement /> },
-        { path: "certificates", element: <Certificate /> }
       ]
     }
   ]);

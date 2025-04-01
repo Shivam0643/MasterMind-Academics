@@ -6,7 +6,7 @@ dotenv.config();
 function adminMiddleware(req, res, next) {
     console.log("🔹 Incoming Headers:", req.headers);
 
-    let token = req.cookies.jwt; // Check for token in cookies
+    let token = req.cookies.jwt;  // Check for token in cookies
 
     if (!token && req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
         token = req.headers.authorization.split(" ")[1]; // Extract token from Authorization header
@@ -18,13 +18,14 @@ function adminMiddleware(req, res, next) {
     }
 
     try {
+        // Verify token using the secret key from environment variables
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         console.log("✅ Decoded Token:", decoded);
-        req.adminId = decoded.id;
+        req.adminId = decoded.id;  // Save the decoded user info to the request
         next();
     } catch (error) {
         console.error("❌ Invalid or Expired Token", error);
-        res.status(401).json({ errors: "Invalid or expired token" });
+        return res.status(401).json({ errors: "Invalid or expired token" });
     }
 }
 
