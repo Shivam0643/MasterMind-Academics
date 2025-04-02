@@ -117,7 +117,7 @@ function Navbar() {
                 <ul className="flex flex-col justify-center space-y-4 py-10 px-10 text-gray-400 text-2xl">
                     <Link to={"/"} className="cursor-pointer" onClick={() => setIsOpen(false)}>Home</Link>
                     <Link to={"/courses"} className="cursor-pointer" onClick={() => setIsOpen(false)}>Courses</Link>
-                    <Link to={"/purchase"} className="cursor-pointer" onClick={() => setIsOpen(false)}>Purchase  d</Link>
+                    <Link to={"/purchase"} className="cursor-pointer" onClick={() => setIsOpen(false)}>Purchased</Link>
                     <Link to={"/livecourses"} className="wiggle font-mono text-red-500 font-semibold tracking-wide cursor-pointer animate 1s ease-in-out infinite" onClick={() => setIsOpen(false)}>
                         Live Course
                     </Link>
