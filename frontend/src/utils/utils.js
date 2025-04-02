@@ -1,1 +1,1 @@
-export const BACKEND_URL = "https://master-mind-academix.verl.app/api/v1";
+export const BACKEND_URL = "https://master-mind-academix.vercel.app/api/v1";
