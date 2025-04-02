@@ -14,6 +14,8 @@ import cookieParser from "cookie-parser";
 const app = express();
 dotenv.config();
 
+
+
 // Configure CORS to allow the frontend URL dynamically
 const allowedOrigins = [
     process.env.FRONTEND_URL,   // The dynamic frontend URL from environment variable

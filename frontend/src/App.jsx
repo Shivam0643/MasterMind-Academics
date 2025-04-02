@@ -15,7 +15,7 @@ import OurCourses from './Admin/OurCourses';
 import Purchases from './pages/Purchases';
 import ProtectedAdminRoute from './Admin/ProtectedAdminRoute';
 import Lectures from './Admin/Lectures';
-import CourseLectures from './pages/CourseLectures'; 
+import CourseLectures from './pages/CourseLectures';
 import QuizManagement from "./Admin/QuizManagement";
 
 
