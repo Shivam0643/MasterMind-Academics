@@ -16,29 +16,26 @@ dotenv.config();
 
 
 
-// Configure CORS to allow the frontend URL dynamically
 const allowedOrigins = [
-    process.env.FRONTEND_URL,   // The dynamic frontend URL from environment variable
-    "http://localhost:5173",    // Local development URL
+    process.env.FRONTEND_URL || "https://master-mind-academix.vercel.app",  // Ensure frontend is explicitly allowed
+    "http://localhost:5173", // Local development URL
 ];
-
-// Allow all origins in development
-if (process.env.NODE_ENV === 'development') {
-    allowedOrigins.push('*'); // This will accept any origin in development
-}
 
 app.use(cors({
     origin: (origin, callback) => {
-        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-            callback(null, true); // Allow the request
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
         } else {
-            callback(new Error("Not allowed by CORS")); // Reject the request
+            callback(new Error("Not allowed by CORS"));
         }
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
 }));
+
+app.options('*', cors()); // Enable preflight requests for all routes
+
 
 // middleware
 app.use(express.json());
@@ -54,12 +51,18 @@ app.options('*', cors()); // Enable preflight for all routes
 const PORT = process.env.PORT || 4000;
 const DB_URI = process.env.MONGO_URI;
 
-try {
-    await mongoose.connect(DB_URI);
-    console.log("Connected to mongoDB");
-} catch (error) {
-    console.log(error);
-}
+const connectDB = async () => {
+    try {
+        await mongoose.connect(DB_URI);
+        console.log("Connected to MongoDB");
+    } catch (error) {
+        console.error("MongoDB Connection Error:", error);
+        process.exit(1); // Exit process on failure
+    }
+};
+
+// Call function before starting server
+connectDB();
 
 // Defining routes
 app.use("/api/v1/course", courseRoute);
