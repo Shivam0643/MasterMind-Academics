@@ -65,7 +65,12 @@ function Navbar() {
 
     return (
         <div className="w-full flex justify-between items-center py-4 px-6 sm:px-20 bg-transparent text-white transition-all duration-500">
-            <Link to={"/"} className="flex  justify-center items-center gap-2 cursor-pointer">
+            <Link to={"/"} className="flex  justify-center items-center gap-2 cursor-pointer"  onClick={(e) => {
+        if (window.location.pathname === "/") {
+            e.preventDefault(); // Prevent default navigation
+            window.scrollTo({ top: 0, behavior: "smooth" }); // Smooth scroll to top
+        }
+    }}>
                 <div className="text-3xl font-bold">
                     <span>M</span>
                     <span className="text-[#24cfa6]">A</span>
@@ -84,7 +89,12 @@ function Navbar() {
             <div className="hidden md:flex justify-center items-center space-x-10 tracking-tight">
                 <ul className="capitalize flex justify-center items-center space-x-10 tracking-tight">
                     <Link to={'/admin/login'} className="border border-gray-600 px-4 py-2 rounded-full text-sm">Admin Panel</Link>
-                    <Link to={"/"} className="cursor-pointer">Home</Link>
+                    <Link to={"/"} className="cursor-pointer" onClick={(e) => {
+                        if (window.location.pathname === "/") {
+                            e.preventDefault(); // Prevent default navigation
+                            window.scrollTo({ top: 0, behavior: "smooth" }); // Smooth scroll to top
+                        }
+                    }}>Home</Link>
                     <Link to={"/courses"} className="cursor-pointer">Courses</Link>
                     <Link to={"/purchase"} className="cursor-pointer">Purchased</Link>
                     <Link to={"/livecourses"} className="wiggle font-mono text-red-500 font-semibold tracking-wide cursor-pointer animate 1s ease-in-out infinite">
