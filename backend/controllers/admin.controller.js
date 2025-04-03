@@ -69,7 +69,12 @@ export const login = async (req, res) => {
         };
 
         // ✅ Set cookie
-        res.cookie("jwt", token, cookieOptions);
+        res.cookie("jwt", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production", // ✅ Must be true in production
+            sameSite: "None", // ✅ Required for cross-origin authentication
+            path: "/",
+        });
 
         console.log("✅ Cookie Set Successfully");
 
@@ -82,6 +87,7 @@ export const login = async (req, res) => {
 };
 
 // logout
+// logout
 export const logout = async (req, res) => {
     try {
         console.log("Cookies received:", req.cookies); // Debugging step
@@ -90,10 +96,18 @@ export const logout = async (req, res) => {
             return res.status(401).json({ errors: "Kindly login first" });
         }
 
-        res.clearCookie("jwt", { path: "/", httpOnly: true, sameSite: "None", secure: true });
+        // ✅ Securely clear the cookie
+        res.clearCookie("jwt", {
+            path: "/",
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production", // ✅ Ensure secure flag in production
+            sameSite: "None" // ✅ Required for cross-origin logout
+        });
+
         res.status(200).json({ message: "Logged out successfully" });
     } catch (error) {
         console.error("Error in logout:", error);
         res.status(500).json({ errors: "Error in logout" });
     }
 };
+
