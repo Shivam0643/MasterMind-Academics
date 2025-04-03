@@ -100,7 +100,6 @@ export const logout = async (req, res) => {
     }
 };
 
-
 // purchases
 export const purchase = async (req, res) => {
     const userId = req.userId;

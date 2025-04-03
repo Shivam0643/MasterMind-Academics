@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import RootLayout from "./components/RootLayout";  // Import new wrapper
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Error from './pages/Error';
@@ -18,64 +19,40 @@ import Lectures from './Admin/Lectures';
 import CourseLectures from './pages/CourseLectures';
 import QuizManagement from "./Admin/QuizManagement";
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />, // Wrap with RootLayout
+    children: [
+      { path: "", element: <Home /> },
+      { path: "login", element: <Login /> },
+      { path: "signup", element: <SignUp /> },
+      { path: "*", element: <Error /> },
+      { path: "courses", element: <Courses /> },
+      { path: "courses/:courseId", element: <CourseDetail /> },
+      { path: "livecourses", element: <LiveCourse /> },
+      { path: "purchase", element: <Purchases /> },
+      { path: "course/:courseId/lectures", element: <CourseLectures /> },
+
+      // Admin Routes
+      { path: "admin/signup", element: <AdminSignup /> },
+      { path: "admin/login", element: <AdminLogin /> },
+      {
+        path: "admin/",
+        element: <ProtectedAdminRoute />,
+        children: [
+          { path: "dashboard", element: <Dashboard /> },
+          { path: "createcourse", element: <CreateCourse /> },
+          { path: "lectures", element: <Lectures /> },
+          { path: "ourcourses", element: <OurCourses /> },
+          { path: "quizzes", element: <QuizManagement /> },
+        ],
+      }
+    ],
+  },
+]);
 
 function App() {
-  const router = createBrowserRouter([
-    {
-      path: '/',
-      element: <Home />
-    },
-    {
-      path: '/login',
-      element: <Login />
-    },
-    {
-      path: '/signup',
-      element: <SignUp />
-    },
-    {
-      path: '*',
-      element: <Error />
-    },
-    {
-      path: '/courses',
-      element: <Courses />
-    },
-    {
-      path: '/courses/:courseId', // Dynamic route for course details
-      element: <CourseDetail />,
-    },
-    {
-      path: '/livecourses',
-      element: <LiveCourse />
-    },
-    {
-      path: '/purchase',
-      element: <Purchases />
-    },
-    {
-      path: '/course/:courseId/lectures', // New route for course lectures
-      element: <CourseLectures />,  // This page will display the lectures for the specific course
-    },
-
-    // Admin Routes (Unprotected)
-    { path: '/admin/signup', element: <AdminSignup /> },
-    { path: '/admin/login', element: <AdminLogin /> },
-
-    // Protected Admin Routes
-    {
-      path: '/admin/',
-      element: <ProtectedAdminRoute />, // Protect all admin routes
-      children: [
-        { path: 'dashboard', element: <Dashboard /> },
-        { path: 'createcourse', element: <CreateCourse /> },
-        { path: 'lectures', element: <Lectures /> },
-        { path: 'ourcourses', element: <OurCourses /> },
-        { path: "quizzes", element: <QuizManagement /> },
-      ]
-    }
-  ]);
-
   return (
     <>
       <RouterProvider router={router} />

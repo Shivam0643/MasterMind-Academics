@@ -115,7 +115,10 @@ function AdminLogin() {
                                 </button>
                             </div>
                         </div>
-                        <div className="flex justify-center items-center w-full gap-2">
+
+                        {/* create account button */}
+
+                        {/* <div className="flex justify-center items-center w-full gap-2">
                             <div className="border border-gray-500 w-full h-0"></div>
                             <span className="text-gray-300">or</span>
                             <div className="border border-gray-500 w-full h-0"></div>
@@ -128,7 +131,7 @@ function AdminLogin() {
                                 <AiOutlineUserAdd className="text-xl md:text-2xl" />
                                 Create New Admin
                             </Link>
-                        </div>
+                        </div> */}
                     </form>
                 </div>
             </div>

@@ -65,7 +65,7 @@ function Navbar() {
 
     return (
         <div className="w-full flex justify-between items-center py-4 px-6 sm:px-20 bg-transparent text-white transition-all duration-500">
-            <Link to={"/"} className="flex justify-center items-center gap-2 cursor-pointer">
+            <Link to={"/"} className="flex  justify-center items-center gap-2 cursor-pointer">
                 <div className="text-3xl font-bold">
                     <span>M</span>
                     <span className="text-[#24cfa6]">A</span>
@@ -75,7 +75,6 @@ function Navbar() {
 
             {/* Hamburger Icon (Small Devices) */}
             <div className="sm:hidden flex justify-center items-center gap-2">
-                <IoCallOutline className="text-xl font-bold" />
                 <button onClick={() => setIsOpen(!isOpen)} className="text-white">
                     <HiMenuAlt4 className="text-3xl" />
                 </button>
@@ -84,13 +83,13 @@ function Navbar() {
             {/* Main Navbar (Medium and Larger Screens) */}
             <div className="hidden md:flex justify-center items-center space-x-10 tracking-tight">
                 <ul className="capitalize flex justify-center items-center space-x-10 tracking-tight">
+                    <Link to={'/admin/login'} className="border border-gray-600 px-4 py-2 rounded-full text-sm">Admin Panel</Link>
                     <Link to={"/"} className="cursor-pointer">Home</Link>
                     <Link to={"/courses"} className="cursor-pointer">Courses</Link>
                     <Link to={"/purchase"} className="cursor-pointer">Purchased</Link>
                     <Link to={"/livecourses"} className="wiggle font-mono text-red-500 font-semibold tracking-wide cursor-pointer animate 1s ease-in-out infinite">
                         Live Course
                     </Link>
-                    <li className="cursor-pointer">Request Callback</li>
                     {isLoggedIn ? (
                         <button className="bg-[#24cfa6] w-20 py-1 rounded-md text-black" onClick={handleLogout}>
                             Logout
@@ -135,6 +134,7 @@ function Navbar() {
                             </Link>
                         </li>
                     )}
+                    <Link to={'/admin/login'} className="border border-gray-600 px-4 py-2 rounded-full text-sm w-fit bg-[#24cfa6] text-black font-semibold">Admin Panel</Link>
                 </ul>
             </div>
         </div>
