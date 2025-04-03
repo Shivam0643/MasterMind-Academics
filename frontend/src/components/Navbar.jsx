@@ -65,12 +65,12 @@ function Navbar() {
 
     return (
         <div className="w-full flex justify-between items-center py-4 px-6 sm:px-20 bg-transparent text-white transition-all duration-500">
-            <Link to={"/"} className="flex  justify-center items-center gap-2 cursor-pointer"  onClick={(e) => {
-        if (window.location.pathname === "/") {
-            e.preventDefault(); // Prevent default navigation
-            window.scrollTo({ top: 0, behavior: "smooth" }); // Smooth scroll to top
-        }
-    }}>
+            <Link to={"/"} className="flex  justify-center items-center gap-2 cursor-pointer" onClick={(e) => {
+                if (window.location.pathname === "/") {
+                    e.preventDefault(); // Prevent default navigation
+                    window.scrollTo({ top: 0, behavior: "smooth" }); // Smooth scroll to top
+                }
+            }}>
                 <div className="text-3xl font-bold">
                     <span>M</span>
                     <span className="text-[#24cfa6]">A</span>
@@ -124,7 +124,13 @@ function Navbar() {
                 </div>
                 <hr />
                 <ul className="flex flex-col justify-center space-y-4 py-10 px-10 text-gray-400 text-2xl">
-                    <Link to={"/"} className="cursor-pointer" onClick={() => setIsOpen(false)}>Home</Link>
+                    <Link to={"/"} className="cursor-pointer" onClick={(e) => {
+                        setIsOpen(false); // Close the menu
+                        if (window.location.pathname === "/") {
+                            e.preventDefault(); // Prevent default navigation
+                            window.scrollTo({ top: 0, behavior: "smooth" }); // Smooth scroll to top
+                        }
+                    }}>Home</Link>
                     <Link to={"/courses"} className="cursor-pointer" onClick={() => setIsOpen(false)}>Courses</Link>
                     <Link to={"/purchase"} className="cursor-pointer" onClick={() => setIsOpen(false)}>Purchased</Link>
                     <Link to={"/livecourses"} className="wiggle font-mono text-red-500 font-semibold tracking-wide cursor-pointer animate 1s ease-in-out infinite" onClick={() => setIsOpen(false)}>
