@@ -71,24 +71,33 @@ const Purchases = () => {
                                 Learn what matters <FaArrowDown />
                             </p>
                             <div className="py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {purchasedCourses.map((course) => (
-                                    <div key={course._id} onClick={() => handleCourseClick(course._id)} className="bg-[#171717] p-4 rounded-2xl shadow-md cursor-pointer">
-                                        {course.image?.url ? (
-                                            <img
-                                                src={course.image.url}
-                                                alt={course.title}
-                                                className="w-full h-40 md:h-60 object-cover rounded-lg mb-4"
-                                            />
-                                        ) : (
-                                            <div className="h-40 md:h-60 bg-gray-700 flex justify-center items-center rounded-lg w-full">
-                                                <p className="text-gray-300">No image available</p>
-                                            </div>
-                                        )}
-                                        <h2 className="text-2xl font-semibold">{course.title}</h2>
-                                        <p className="text-gray-400">{course.description}</p>
-                                        <p className="text-green-400 font-bold">Price: {course.price}</p>
-                                    </div>
-                                ))}
+                                {purchasedCourses.map((course) => {
+                                    if (!course) return null; // Skip null entries safely
+
+                                    return (
+                                        <div
+                                            key={course._id}
+                                            onClick={() => handleCourseClick(course._id)}
+                                            className="bg-[#171717] p-4 rounded-2xl shadow-md cursor-pointer"
+                                        >
+                                            {course.image?.url ? (
+                                                <img
+                                                    src={course.image.url}
+                                                    alt={course.title}
+                                                    className="w-full h-40 md:h-60 object-cover rounded-lg mb-4"
+                                                />
+                                            ) : (
+                                                <div className="h-40 md:h-60 bg-gray-700 flex justify-center items-center rounded-lg w-full">
+                                                    <p className="text-gray-300">No image available</p>
+                                                </div>
+                                            )}
+                                            <h2 className="text-2xl font-semibold">{course.title}</h2>
+                                            <p className="text-gray-400">{course.description}</p>
+                                            <p className="text-green-400 font-bold">Price: {course.price}</p>
+                                        </div>
+                                    );
+                                })}
+
                             </div>
                         </div>
                     </>
