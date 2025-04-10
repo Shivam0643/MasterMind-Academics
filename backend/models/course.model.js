@@ -32,6 +32,8 @@ const courseSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Lecture",
     }],
+}, {
+    timestamps: true
 });
 
 export const Course = mongoose.model("Course", courseSchema);

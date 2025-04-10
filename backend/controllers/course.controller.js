@@ -107,13 +107,14 @@ export const deleteCourse = async (req, res) => {
 // All courses
 export const getCourse = async (req, res) => {
     try {
-        const courses = await Course.find({});
-        res.status(200).json({ courses }); // Use 200 for successful GET request
+        const courses = await Course.find({}).sort({ createdAt: -1 }); // 🔥 Sort by newest first
+        res.status(200).json({ courses });
     } catch (error) {
-        console.error("Error fetching courses:", error.stack); // Log full error stack
+        console.error("Error fetching courses:", error.stack);
         res.status(500).json({ errors: "Error in getting courses" });
     }
-}
+};
+
 
 // Targeting particular course
 export const courseDetails = async (req, res) => {

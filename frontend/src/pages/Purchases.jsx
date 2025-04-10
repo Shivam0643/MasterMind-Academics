@@ -19,8 +19,10 @@ const Purchases = () => {
                 const userData = JSON.parse(localStorage.getItem("user"));
                 if (!userData?.token) {
                     console.error("❌ No user token found. User is not authenticated.");
+                    setLoading(false); // ✅ Fix: stop loading spinner
                     return;
                 }
+
 
                 const response = await axios.get(`${BACKEND_URL}/course/purchased`, {
                     headers: { Authorization: `Bearer ${userData.token}` },

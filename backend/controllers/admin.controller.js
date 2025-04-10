@@ -42,46 +42,30 @@ export const login = async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        console.log("🔹 Login Attempt:", email);
-
-        const admin = await Admin.findOne({ email: email });
+        const admin = await Admin.findOne({ email });
         if (!admin) {
-            console.log("❌ Admin not found");
             return res.status(403).json({ errors: "Invalid credentials" });
         }
 
         const isPasswordCorrect = await bcrypt.compare(password, admin.password);
         if (!isPasswordCorrect) {
-            console.log("❌ Incorrect Password");
             return res.status(403).json({ errors: "Invalid credentials" });
         }
 
-        // ✅ Generate JWT token
-        const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
-
-        console.log("✅ Token Generated:", token);
-
-        const cookieOptions = {
-            expires: new Date(Date.now() + 24 * 60 * 60 * 1000), //1 day
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "Strict" // Prevent CSRF attack
-        };
-
-        // ✅ Set cookie
-        res.cookie("jwt", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production", // ✅ Must be true in production
-            sameSite: "None", // ✅ Required for cross-origin authentication
-            path: "/",
+        const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, {
+            expiresIn: "1d",
         });
 
-        console.log("✅ Cookie Set Successfully");
+        res.cookie("jwt", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "None",
+            path: "/",
+            maxAge: 24 * 60 * 60 * 1000, // 1 day
+        });
 
-        // ✅ Send response
-        res.status(201).json({ message: "Login successfully", admin, token });
+        res.status(201).json({ message: "Login successful", admin });
     } catch (error) {
-        console.error("❌ Error in login:", error);
         res.status(500).json({ errors: "Error in login" });
     }
 };
@@ -90,24 +74,21 @@ export const login = async (req, res) => {
 // logout
 export const logout = async (req, res) => {
     try {
-        console.log("Cookies received:", req.cookies); // Debugging step
-
         if (!req.cookies.jwt) {
-            return res.status(401).json({ errors: "Kindly login first" });
+            return res.status(401).json({ errors: "No token provided" });
         }
 
-        // ✅ Securely clear the cookie
         res.clearCookie("jwt", {
             path: "/",
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production", // ✅ Ensure secure flag in production
-            sameSite: "None" // ✅ Required for cross-origin logout
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "None",
         });
 
         res.status(200).json({ message: "Logged out successfully" });
     } catch (error) {
-        console.error("Error in logout:", error);
         res.status(500).json({ errors: "Error in logout" });
     }
 };
+
 

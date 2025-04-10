@@ -21,12 +21,16 @@ function FeaturedCourses() {
                 const response = await axios.get(`${BACKEND_URL}/course/courses`, {
                     withCredentials: true,
                 });
-                // Simulate a delay of 1 second before updating the state
+
+                // Sort courses by creation date (newest first)
+                const sortedCourses = response.data.courses.sort(
+                    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+                );
+
                 setTimeout(() => {
-                    console.log(response.data.courses);
-                    setCourses(response.data.courses); // Assuming response data has a "courses" key.
+                    setCourses(sortedCourses);
                     setLoading(false);
-                }, 1000); // 1-second delay
+                }, 1000);
             } catch (error) {
                 console.log("Error in fetching courses", error);
                 toast.error("Failed to fetch courses. Please try again.");
@@ -34,6 +38,7 @@ function FeaturedCourses() {
         };
         fetchCourses();
     }, []);
+
 
     const handleViewDetails = (courseId) => {
         if (isAuthenticated) {
