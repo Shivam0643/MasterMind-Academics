@@ -97,9 +97,9 @@ function Dashboard() {
                     <Link to="/admin/quizzes" className="flex items-center space-x-2 p-2 hover:bg-[#24cfa6] rounded hover:text-black font-semibold">
                         <MdManageHistory /> <span>Quiz Management</span>
                     </Link>
-                    <Link to="/admin/all-purchases" className="flex items-center space-x-2 p-2 hover:bg-[#24cfa6] rounded hover:text-black font-semibold">
+                    {/* <Link to="/admin/all-purchases" className="flex items-center space-x-2 p-2 hover:bg-[#24cfa6] rounded hover:text-black font-semibold">
                         <BiSolidUserDetail /> <span>Purchase Details</span>
-                    </Link>
+                    </Link> */}
                     <button onClick={handleLogout} className="flex items-center space-x-2 p-2 hover:bg-red-600 rounded font-semibold">
                         <FaSignOutAlt /> <span>Logout</span>
                     </button>
