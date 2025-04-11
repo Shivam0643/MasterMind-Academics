@@ -19,18 +19,15 @@ function Dashboard() {
             const response = await axios.get(`${BACKEND_URL}/admin/logout`, {
                 withCredentials: true,
             });
-            console.log(response.data);
-            toast.success(response.data.message);
-
-            // Clear token from localStorage
-            localStorage.removeItem("admin");
-
-            navigate('/admin/login')
+            toast.success("Logout successfully")
+            navigate("/admin/login")
+            // Redirect or update state as needed
         } catch (error) {
             console.error("Error in logout", error);
-            toast.error(error.response?.data?.errors || "Error in logging out");
         }
     };
+
+
 
     return (
         <div className="flex h-screen bg-[#0c0c0c] text-white relative">
@@ -57,6 +54,9 @@ function Dashboard() {
                     </Link>
                     <Link to="/admin/quizzes" className="flex items-center space-x-2 p-2 hover:bg-[#24cfa6] rounded hover:text-black font-semibold">
                         <MdManageHistory /> <span>Quiz Management</span>
+                    </Link>
+                    <Link to="/admin/all-purchases" className="flex items-center space-x-2 p-2 hover:bg-[#24cfa6] rounded hover:text-black font-semibold">
+                        <MdManageHistory /> <span>Purchase Details</span>
                     </Link>
                     <button onClick={handleLogout} className="flex items-center space-x-2 p-2 hover:bg-red-600 rounded font-semibold">
                         <FaSignOutAlt /> <span>Logout</span>

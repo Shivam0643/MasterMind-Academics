@@ -107,13 +107,31 @@ export const deleteCourse = async (req, res) => {
 // All courses
 export const getCourse = async (req, res) => {
     try {
-        const courses = await Course.find({}).sort({ createdAt: -1 }); // 🔥 Sort by newest first
+        let courses;
+
+        // 🔐 If user is logged in, filter out purchased courses
+        if (req.userId) {
+            const userId = req.userId;
+
+            const purchases = await Purchase.find({ userId });
+            const purchasedCourseIds = purchases.map(p => p.courseId.toString());
+
+            // ✅ Show only courses NOT purchased
+            courses = await Course.find({ _id: { $nin: purchasedCourseIds } }).sort({ createdAt: -1 });
+        } else {
+            // 🆓 If user not logged in, show all courses
+            courses = await Course.find().sort({ createdAt: -1 });
+        }
+
         res.status(200).json({ courses });
     } catch (error) {
-        console.error("Error fetching courses:", error.stack);
+        console.error("Error fetching courses:", error);
         res.status(500).json({ errors: "Error in getting courses" });
     }
 };
+
+
+
 
 
 // Targeting particular course
@@ -244,6 +262,33 @@ export const getPurchasedCourses = async (req, res) => {
         res.status(500).json({ errors: "Error in getting course details" });
     }
 };
+
+// all purchased details for admin dashboard
+export const getAllPurchasesWithDetails = async (req, res) => {
+    try {
+        const purchases = await Purchase.find()
+            .populate("userId", "firstName lastName email")  // only select name and email from user
+            .populate("courseId", "title price") // only select title and price from course
+            .sort({ purchasedAt: -1 });
+
+        res.status(200).json({ purchases });
+    } catch (error) {
+        console.error("Error fetching purchase details:", error);
+        res.status(500).json({ message: "Error fetching purchase data" });
+    }
+};
+
+//   delete purchase history
+export const deletePurchase = async (req, res) => {
+    try {
+        const deleted = await Purchase.findByIdAndDelete(req.params.id);
+        if (!deleted) return res.status(404).json({ message: "Purchase not found" });
+
+        res.status(200).json({ message: "Purchase deleted" });
+    } catch (err) {
+        res.status(500).json({ error: "Failed to delete purchase" });
+    }
+}
 
 
 

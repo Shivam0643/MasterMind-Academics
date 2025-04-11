@@ -64,20 +64,23 @@ export const login = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000, // 1 day
         });
 
-        res.status(201).json({ message: "Login successful", admin });
+        res.status(201).json({
+            message: "Login successful",
+            token,  // 🟢 Include token here
+            admin: {
+                _id: admin._id,
+                email: admin.email,
+                role: admin.role,
+            },
+        });
     } catch (error) {
         res.status(500).json({ errors: "Error in login" });
     }
 };
 
 // logout
-// logout
 export const logout = async (req, res) => {
     try {
-        if (!req.cookies.jwt) {
-            return res.status(401).json({ errors: "No token provided" });
-        }
-
         res.clearCookie("jwt", {
             path: "/",
             httpOnly: true,
@@ -85,10 +88,12 @@ export const logout = async (req, res) => {
             sameSite: "None",
         });
 
-        res.status(200).json({ message: "Logged out successfully" });
+        return res.status(200).json({ message: "Logged out successfully" });
     } catch (error) {
-        res.status(500).json({ errors: "Error in logout" });
+        console.error("❌ Error in logout", error);
+        return res.status(500).json({ errors: "Error in logout" });
     }
 };
+
 
 

@@ -11,6 +11,10 @@ const purchaseSchema = new mongoose.Schema({
         ref: "Course",
         required: true,
     },
+    purchasedAt: {
+        type: Date,
+        default: Date.now,
+    }
 });
 
 export const Purchase = mongoose.model("Purchase", purchaseSchema);

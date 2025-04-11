@@ -48,7 +48,7 @@ app.use(fileUpload({
 // Handle preflight requests for all routes
 app.options('*', cors()); // Enable preflight for all routes
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 const DB_URI = process.env.MONGO_URI;
 
 const connectDB = async () => {

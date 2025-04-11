@@ -3,7 +3,7 @@ import "../App.css";
 import { HiMenuAlt4 } from "react-icons/hi";
 import { RxCross2 } from "react-icons/rx";
 import { IoCallOutline } from "react-icons/io5";
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { BACKEND_URL } from "../utils/utils";
@@ -14,7 +14,6 @@ function Navbar() {
     const [sign, setSign] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("user"));
 
-    // Listen for changes in localStorage to update login state
     useEffect(() => {
         const handleStorageChange = () => {
             setIsLoggedIn(!!localStorage.getItem("user"));
@@ -24,7 +23,6 @@ function Navbar() {
         return () => window.removeEventListener("storage", handleStorageChange);
     }, []);
 
-    // Handle user logout
     const handleLogout = async () => {
         try {
             const user = JSON.parse(localStorage.getItem("user"));
@@ -39,16 +37,15 @@ function Navbar() {
 
             await axios.post(
                 `${BACKEND_URL}/user/logout`,
-                {}, // No body needed
+                {},
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
-                    withCredentials: true, // Send cookies as well if needed
+                    withCredentials: true,
                 }
             );
 
-            // Clear user session
             localStorage.removeItem("user");
             delete axios.defaults.headers.common["Authorization"];
             setIsLoggedIn(false);
@@ -61,14 +58,15 @@ function Navbar() {
         }
     };
 
-
+    const activeLinkStyle = ({ isActive }) =>
+        isActive ? "text-[#24cfa6] transition duration-300" : "transition duration-300 hover:text-[#24cfa6]";
 
     return (
         <div className="w-full flex justify-between items-center py-4 px-6 sm:px-20 bg-transparent text-white transition-all duration-500">
-            <Link to={"/"} className="flex  justify-center items-center gap-2 cursor-pointer" onClick={(e) => {
+            <Link to={"/"} className="flex justify-center items-center gap-2 cursor-pointer" onClick={(e) => {
                 if (window.location.pathname === "/") {
-                    e.preventDefault(); // Prevent default navigation
-                    window.scrollTo({ top: 0, behavior: "smooth" }); // Smooth scroll to top
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: "smooth" });
                 }
             }}>
                 <div className="text-3xl font-bold">
@@ -78,43 +76,38 @@ function Navbar() {
                 <span className="tracking-wider font-semibold">MasterMind Academix</span>
             </Link>
 
-            {/* Hamburger Icon (Small Devices) */}
             <div className="sm:hidden flex justify-center items-center gap-2">
                 <button onClick={() => setIsOpen(!isOpen)} className="text-white">
                     <HiMenuAlt4 className="text-3xl" />
                 </button>
             </div>
 
-            {/* Main Navbar (Medium and Larger Screens) */}
             <div className="hidden md:flex justify-center items-center space-x-10 tracking-tight">
                 <ul className="capitalize flex justify-center items-center space-x-10 tracking-tight">
-                    <Link to={'/admin/login'} className="border border-gray-600 px-4 py-2 rounded-full text-sm">Admin Panel</Link>
-                    <Link to={"/"} className="cursor-pointer" onClick={(e) => {
+                    <NavLink to={'/admin/login'} className="border border-gray-600 px-4 py-2 rounded-full text-sm">Admin Panel</NavLink>
+                    <NavLink to={"/"} className={activeLinkStyle} onClick={(e) => {
                         if (window.location.pathname === "/") {
-                            e.preventDefault(); // Prevent default navigation
-                            window.scrollTo({ top: 0, behavior: "smooth" }); // Smooth scroll to top
+                            e.preventDefault();
+                            window.scrollTo({ top: 0, behavior: "smooth" });
                         }
-                    }}>Home</Link>
-                    <Link to={"/courses"} className="cursor-pointer">Courses</Link>
-                    <Link to={"/purchase"} className="cursor-pointer">Purchased</Link>
-                    <Link to={"/livecourses"} className="wiggle font-mono text-red-500 font-semibold tracking-wide cursor-pointer animate 1s ease-in-out infinite">
-                        Live Course
-                    </Link>
+                    }}>Home</NavLink>
+                    <NavLink to={"/courses"} className={activeLinkStyle}>Courses</NavLink>
+                    <NavLink to={"/purchase"} className={activeLinkStyle}>Purchased</NavLink>
+                    <NavLink to={"/livecourses"} className={activeLinkStyle + " wiggle font-mono text-red-500 font-semibold tracking-wide"}>Live Course</NavLink>
                     {isLoggedIn ? (
                         <button className="bg-[#24cfa6] w-20 py-1 rounded-md text-black" onClick={handleLogout}>
                             Logout
                         </button>
                     ) : (
-                        <Link to={sign ? "/signup" : "/login"}>
+                        <NavLink to={sign ? "/signup" : "/login"}>
                             <button className="bg-[#24cfa6] w-20 py-1 rounded-md text-black" onClick={() => setSign(!sign)}>
                                 {sign ? "Sign Up" : "Sign In"}
                             </button>
-                        </Link>
+                        </NavLink>
                     )}
                 </ul>
             </div>
 
-            {/* Mobile Menu */}
             <div className={`sm:hidden bg-black fixed top-0 left-0 w-full h-screen z-10 transition-all duration-500 ${isOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"}`}>
                 <div className="flex justify-between items-center px-10 py-5 text-3xl">
                     <h1>Menu</h1>
@@ -124,18 +117,18 @@ function Navbar() {
                 </div>
                 <hr />
                 <ul className="flex flex-col justify-center space-y-4 py-10 px-10 text-gray-400 text-2xl">
-                    <Link to={"/"} className="cursor-pointer" onClick={(e) => {
-                        setIsOpen(false); // Close the menu
+                    <NavLink to={"/"} className={activeLinkStyle} onClick={(e) => {
+                        setIsOpen(false);
                         if (window.location.pathname === "/") {
-                            e.preventDefault(); // Prevent default navigation
-                            window.scrollTo({ top: 0, behavior: "smooth" }); // Smooth scroll to top
+                            e.preventDefault();
+                            window.scrollTo({ top: 0, behavior: "smooth" });
                         }
-                    }}>Home</Link>
-                    <Link to={"/courses"} className="cursor-pointer" onClick={() => setIsOpen(false)}>Courses</Link>
-                    <Link to={"/purchase"} className="cursor-pointer" onClick={() => setIsOpen(false)}>Purchased</Link>
-                    <Link to={"/livecourses"} className="wiggle font-mono text-red-500 font-semibold tracking-wide cursor-pointer animate 1s ease-in-out infinite" onClick={() => setIsOpen(false)}>
+                    }}>Home</NavLink>
+                    <NavLink to={"/courses"} className={activeLinkStyle} onClick={() => setIsOpen(false)}>Courses</NavLink>
+                    <NavLink to={"/purchase"} className={activeLinkStyle} onClick={() => setIsOpen(false)}>Purchased</NavLink>
+                    <NavLink to={"/livecourses"} className={activeLinkStyle + " wiggle font-mono text-red-500 font-semibold tracking-wide"} onClick={() => setIsOpen(false)}>
                         Live Course
-                    </Link>
+                    </NavLink>
                     {isLoggedIn ? (
                         <li className="cursor-pointer" onClick={async () => {
                             await handleLogout();
@@ -145,12 +138,12 @@ function Navbar() {
                         </li>
                     ) : (
                         <li>
-                            <Link to={sign ? "/signup" : "/login"} onClick={() => setIsOpen(false)} className="cursor-pointer">
+                            <NavLink to={sign ? "/signup" : "/login"} onClick={() => setIsOpen(false)} className={activeLinkStyle}>
                                 {sign ? "Sign Up" : "Sign In"}
-                            </Link>
+                            </NavLink>
                         </li>
                     )}
-                    <Link to={'/admin/login'} className="border border-gray-600 px-4 py-2 rounded-full text-sm w-fit bg-[#24cfa6] text-black font-semibold">Admin Panel</Link>
+                    <NavLink to={'/admin/login'} className="border border-gray-600 px-4 py-2 rounded-full text-sm w-fit bg-[#24cfa6] text-black font-semibold">Admin Panel</NavLink>
                 </ul>
             </div>
         </div>
