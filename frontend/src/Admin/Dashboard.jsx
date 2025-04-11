@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FaHome, FaBook, FaPlusCircle, FaSignOutAlt } from "react-icons/fa";
 import { MdOutlineVideoSettings, MdManageHistory } from "react-icons/md";
 import { BiSolidUserDetail } from "react-icons/bi";
@@ -12,40 +12,6 @@ import { BACKEND_URL } from "../utils/utils";
 function Dashboard() {
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
-    const [admin, setAdmin] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-
-    // Fetch Admin Details on Mount
-    useEffect(() => {
-        const checkAdminAuth = async () => {
-            const token = localStorage.getItem("adminToken");
-            if (!token) {
-                toast.error("Unauthorized! Please login.");
-                navigate("/admin/login");
-                return;
-            }
-
-            try {
-                const res = await axios.get(`${BACKEND_URL}/admin/me`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-
-                setAdmin(res.data.admin); // Or setAdmin(res.data) if backend returns differently
-                console.log("✅ Admin Data:", res.data.admin);
-            } catch (error) {
-                console.error("❌ Invalid or expired token.");
-                toast.error("Session expired! Please login again.");
-                localStorage.removeItem("adminToken");
-                navigate("/admin/login");
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        checkAdminAuth();
-    }, [navigate]);
 
     const handleLogout = async () => {
         try {
@@ -60,16 +26,6 @@ function Dashboard() {
             console.error("Logout error:", error);
         }
     };
-
-    if (isLoading) {
-        return (
-            <div className="flex items-center justify-center h-screen bg-black text-white">
-                <p className="text-xl">Loading Dashboard...</p>
-            </div>
-        );
-    }
-
-    if (!admin) return null;
 
     return (
         <div className="flex h-screen bg-[#0c0c0c] text-white relative">
@@ -97,9 +53,9 @@ function Dashboard() {
                     <Link to="/admin/quizzes" className="flex items-center space-x-2 p-2 hover:bg-[#24cfa6] rounded hover:text-black font-semibold">
                         <MdManageHistory /> <span>Quiz Management</span>
                     </Link>
-                    {/* <Link to="/admin/all-purchases" className="flex items-center space-x-2 p-2 hover:bg-[#24cfa6] rounded hover:text-black font-semibold">
+                    <Link to="/admin/all-purchases" className="flex items-center space-x-2 p-2 hover:bg-[#24cfa6] rounded hover:text-black font-semibold">
                         <BiSolidUserDetail /> <span>Purchase Details</span>
-                    </Link> */}
+                    </Link>
                     <button onClick={handleLogout} className="flex items-center space-x-2 p-2 hover:bg-red-600 rounded font-semibold">
                         <FaSignOutAlt /> <span>Logout</span>
                     </button>
@@ -115,7 +71,9 @@ function Dashboard() {
 
             {/* Static Content */}
             <div className="flex-1 p-6 sm:mr-64 overflow-y-auto">
-                <h2 className="text-3xl font-bold mb-6">Welcome, <span className="text-[#24cfa6]">{admin.firstName} {admin.lastName}!</span></h2>
+                <h2 className="text-3xl font-bold mb-6">
+                    Welcome to the <span className="text-[#24cfa6]">Admin Dashboard</span>!
+                </h2>
                 <p className="mb-4">
                     This is the admin dashboard where you can manage courses, create new content,
                     and monitor other activities. Use the sidebar to navigate through different
