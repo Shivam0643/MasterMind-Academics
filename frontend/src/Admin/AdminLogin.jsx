@@ -31,7 +31,7 @@ function AdminLogin() {
 
       // ✅ Save token in localStorage (or cookies)
       localStorage.setItem("adminToken", res.data.token);
-
+      console.log(localStorage.getItem("adminToken"));
       // If you're storing more admin data
       localStorage.setItem("adminData", JSON.stringify(res.data));
       toast.success(res.data.message || "Login successful");

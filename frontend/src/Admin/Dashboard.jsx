@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaHome, FaBook, FaPlusCircle, FaSignOutAlt } from "react-icons/fa";
-import { MdOutlineVideoSettings } from "react-icons/md";
-import { MdManageHistory } from "react-icons/md";
+import { MdOutlineVideoSettings, MdManageHistory } from "react-icons/md";
 import { HiMenuAlt4 } from "react-icons/hi";
 import { RxCross2 } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,22 +11,54 @@ import { BACKEND_URL } from "../utils/utils";
 function Dashboard() {
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [admin, setAdmin] = useState(null); // optional: to show admin details
 
-    // Handle user logout
+    useEffect(() => {
+        const checkAdmin = async () => {
+            try {
+                const token = localStorage.getItem("adminToken");
+
+                const res = await axios.get(`${BACKEND_URL}/admin/me`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    withCredentials: true,
+                });
+
+                console.log("✅ Admin Authenticated:", res.data);
+                setAdmin(res.data.admin); // optional
+                setIsLoading(false); // ✅ unlock dashboard
+            } catch (err) {
+                console.error("❌ Admin Auth Error:", err.response?.data || err.message);
+                navigate("/admin/login"); // redirect if unauthenticated
+            }
+        };
+
+        checkAdmin();
+    }, [navigate]);
+
     const handleLogout = async () => {
         try {
-            const response = await axios.get(`${BACKEND_URL}/admin/logout`, {
+            await axios.get(`${BACKEND_URL}/admin/logout`, {
                 withCredentials: true,
             });
-            toast.success("Logout successfully")
-            navigate("/admin/login")
-            // Redirect or update state as needed
+            localStorage.removeItem("adminToken"); // clear token
+            toast.success("Logged out successfully");
+            navigate("/admin/login");
         } catch (error) {
-            console.error("Error in logout", error);
+            toast.error("Failed to logout");
+            console.error("Logout error:", error);
         }
     };
 
-
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center h-screen bg-black text-white">
+                <p className="text-xl">Loading Dashboard...</p>
+            </div>
+        );
+    }
 
     return (
         <div className="flex h-screen bg-[#0c0c0c] text-white relative">
@@ -71,9 +102,11 @@ function Dashboard() {
                 </button>
             )}
 
-            {/* Static Content */}
-            <div className="flex-1 p-6 sm:mr-64">
-                <h2 className="text-3xl font-bold mb-6">Welcome to the Admin Dashboard!</h2>
+            {/* Main Content */}
+            <div className="flex-1 p-6 sm:mr-64 overflow-y-auto">
+                <h2 className="text-3xl font-bold mb-6">
+                    Welcome {admin?.name ? `, ${admin.name}` : "to the Admin Dashboard"}!
+                </h2>
                 <p className="mb-4">
                     This is the admin dashboard where you can manage courses, create new content,
                     and monitor other activities. Use the sidebar to navigate through different

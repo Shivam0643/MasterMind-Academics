@@ -95,5 +95,12 @@ export const logout = async (req, res) => {
     }
 };
 
+export const getMe = (req, res) => {
+    return res.status(200).json({
+        success: true,
+        admin: req.admin, // assuming you attach admin to req in your middleware
+    });
+};
+
 
 
