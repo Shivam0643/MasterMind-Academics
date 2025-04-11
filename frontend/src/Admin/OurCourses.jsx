@@ -8,12 +8,14 @@ function OurCourses() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const admin = JSON.parse(localStorage.getItem("admin"));
-  const token = admin ? admin.token : null;
+  const token = localStorage.getItem("token"); // directly get token
 
-  if (!token) {
-    toast.error("Please login to admin")
-  }
+  // Show error if token is missing
+  useEffect(() => {
+    if (!token) {
+      toast.error("Please login to admin");
+    }
+  }, [token]);
 
   // Fetch courses
   useEffect(() => {
@@ -22,73 +24,56 @@ function OurCourses() {
         const response = await axios.get(`${BACKEND_URL}/course/courses`, {
           withCredentials: true,
         });
-        // Simulate a delay of 2 seconds before updating the state
+
         setTimeout(() => {
-          setCourses(response.data.courses); // Assuming response data has a "courses" key.
+          setCourses(response.data.courses);
           setLoading(false);
-        }, 2000); // 2-second delay
+        }, 2000);
       } catch (error) {
         console.log("Error in fetching courses", error);
         toast.error("Failed to fetch courses.");
+        setLoading(false);
       }
     };
+
     fetchCourses();
   }, []);
 
   // Delete course
   const handleDelete = async (id) => {
-    const admin = JSON.parse(localStorage.getItem("admin"));
-
-    // Check if token exists, else show error
-    if (!admin || !admin.token) {
-      console.log("Token not found in localStorage");
+    if (!token) {
       toast.error("No token found, please log in.");
       return;
     }
 
-    const token = admin.token;
-    console.log("Token used for deletion:", token);  // Make sure token is available
-
     try {
-      // Sending delete request to backend with the Authorization header
       const response = await axios.delete(`${BACKEND_URL}/course/delete/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        withCredentials: true, // Ensure that credentials are sent if needed
+        withCredentials: true,
       });
 
-      console.log("Delete Response:", response.data);
       toast.success(response.data.message);
-
-      // Remove deleted course from local state
       setCourses(prevCourses => prevCourses.filter(course => course._id !== id));
-
     } catch (error) {
       console.error("Error in deleting course:", error);
-      if (error.response) {
-        console.error("Response error:", error.response);
-        toast.error(error.response.data.error || "Error in deleting course");
-      } else {
-        toast.error("An unknown error occurred. Please try again later.");
-      }
+      toast.error(error.response?.data?.error || "Error in deleting course");
     }
   };
-
-
-
 
   return (
     <div className="p-6 bg-[#0c0c0c] text-white min-h-screen">
       <h1 className="text-3xl font-bold mb-6">Our Courses</h1>
 
-      {/* Loading Spinner */}
       {loading ? (
         <div className="flex justify-center items-center h-[50vh]">
-          <div className="loader"></div>
+          <div className="w-12 h-12 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
         </div>
       ) : courses.length === 0 ? (
-        <p className="text-center text-lg text-white">No courses found. Please add some courses.</p>
+        <p className="text-center text-lg text-white">
+          No courses found. Please add some courses.
+        </p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-500">
           {courses.map((course) => (
