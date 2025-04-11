@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaHome, FaBook, FaPlusCircle, FaSignOutAlt } from "react-icons/fa";
 import { MdOutlineVideoSettings, MdManageHistory } from "react-icons/md";
+import { BiSolidUserDetail } from "react-icons/bi";
 import { HiMenuAlt4 } from "react-icons/hi";
 import { RxCross2 } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
@@ -97,7 +98,7 @@ function Dashboard() {
                         <MdManageHistory /> <span>Quiz Management</span>
                     </Link>
                     <Link to="/admin/all-purchases" className="flex items-center space-x-2 p-2 hover:bg-[#24cfa6] rounded hover:text-black font-semibold">
-                        <MdManageHistory /> <span>Purchase Details</span>
+                        <BiSolidUserDetail /> <span>Purchase Details</span>
                     </Link>
                     <button onClick={handleLogout} className="flex items-center space-x-2 p-2 hover:bg-red-600 rounded font-semibold">
                         <FaSignOutAlt /> <span>Logout</span>
@@ -114,7 +115,7 @@ function Dashboard() {
 
             {/* Static Content */}
             <div className="flex-1 p-6 sm:mr-64 overflow-y-auto">
-                <h2 className="text-3xl font-bold mb-6">Welcome, {admin.firstName}!</h2>
+                <h2 className="text-3xl font-bold mb-6">Welcome, <span className="text-[#24cfa6]">{admin.firstName} {admin.lastName}!</span></h2>
                 <p className="mb-4">
                     This is the admin dashboard where you can manage courses, create new content,
                     and monitor other activities. Use the sidebar to navigate through different
@@ -145,8 +146,10 @@ function Dashboard() {
                         </p>
                     </div>
                     <div>
-                        <h3 className="text-xl font-bold mb-4">Logout</h3>
-                        <p>Click "Logout" to exit the admin dashboard securely.</p>
+                        <h3 className="text-xl font-bold mb-4">Purchase Details</h3>
+                        <p>
+                            Use the 'Purchase Details' section to view all the courses user enrolled in. You can track your date of enroll, and can delete the purchase course of particular user.
+                        </p>
                     </div>
                 </div>
             </div>
