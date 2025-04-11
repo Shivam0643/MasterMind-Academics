@@ -24,10 +24,7 @@ function QuizManagement() {
         }
     }, [selectedCourse]);
 
-    const getToken = () => {
-        const adminData = JSON.parse(localStorage.getItem("admin") || "{}");
-        return adminData?.token;
-    };
+    const getToken = () => localStorage.getItem("adminToken");
 
     const fetchCourses = async () => {
         const token = getToken();
@@ -50,7 +47,7 @@ function QuizManagement() {
 
     const fetchQuiz = async (courseId) => {
         const token = getToken();
-        
+
         if (!token) {
             toast.error("Authentication required! Please log in again.");
             navigate("/admin/login");
@@ -92,12 +89,12 @@ function QuizManagement() {
                 title: quizTitle,
                 quizUrl: quizUrl,
             }, {
-                headers: { 
-                    "Content-Type": "application/json", 
-                    Authorization: `Bearer ${token}` 
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
                 }
             });
-            
+
             toast.success("Quiz added successfully!");
             setQuiz(response.data.quiz);
             setQuizTitle("");
@@ -119,12 +116,12 @@ function QuizManagement() {
 
         try {
             await axios.delete(`${BACKEND_URL}/quiz/${selectedCourse}/delete`, {
-                headers: { 
+                headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`,
                 }
             });
-            
+
             toast.success("Quiz deleted successfully!");
             setQuiz(null);
         } catch (error) {

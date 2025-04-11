@@ -59,7 +59,7 @@ const AllPurchases = () => {
             ) : purchases.length === 0 ? (
                 <p className="text-white text-center text-lg">No purchases found.</p>
             ) : (
-                <div className="w-full border border-[#24cfa6] max-h-[60vh] md:max-h-[80vh] overflow-y-auto">
+                <div className="w-full border border-[#24cfa6] max-h-[80vh] overflow-y-auto">
                     <div className="hidden md:table w-full">
                         <div className="table-header-group border border-[#24cfa6] ">
                             <div className="table-row ">
