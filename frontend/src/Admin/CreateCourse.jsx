@@ -31,8 +31,8 @@ function CreateCourse() {
         formData.append("price", price);
         formData.append("image", image);
 
-        const admin = JSON.parse(localStorage.getItem("admin"));
-        const token = admin.token;
+        const token = localStorage.getItem("adminToken");
+
         if (!token) {
             navigate("/admin/login");
             return;
@@ -56,7 +56,7 @@ function CreateCourse() {
             setPreview("");
         } catch (error) {
             console.log(error);
-            toast.error(error.response.data.errors);
+            toast.error(error?.response?.data?.errors || error?.response?.data?.message || "Something went wrong");
         } finally {
             setLoading(false); // Reset loading state after request completion
         }

@@ -8,41 +8,43 @@ function OurCourses() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const token = localStorage.getItem("token"); // directly get token
+  const token = localStorage.getItem("adminToken");
 
-  // Show error if token is missing
-  useEffect(() => {
-    if (!token) {
-      toast.error("Please login to admin");
-    }
-  }, [token]);
-
-  // Fetch courses
   useEffect(() => {
     const fetchCourses = async () => {
       try {
+        if (!token) {
+          toast.error("Please login as admin to view courses.");
+          setLoading(false);
+          return;
+        }
+
         const response = await axios.get(`${BACKEND_URL}/course/courses`, {
-          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
 
-        setTimeout(() => {
-          setCourses(response.data.courses);
-          setLoading(false);
-        }, 2000);
+        setCourses(response.data.courses || []);
       } catch (error) {
-        console.log("Error in fetching courses", error);
-        toast.error("Failed to fetch courses.");
+        console.error("Error fetching courses:", error);
+
+        if (error.response?.status === 401) {
+          toast.error("Unauthorized. Please login as admin.");
+        } else {
+          toast.error("Failed to fetch courses.");
+        }
+      } finally {
         setLoading(false);
       }
     };
 
     fetchCourses();
-  }, []);
+  }, [token]);
 
-  // Delete course
   const handleDelete = async (id) => {
     if (!token) {
-      toast.error("No token found, please log in.");
+      toast.error("Please login to delete courses.");
       return;
     }
 
@@ -51,14 +53,19 @@ function OurCourses() {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        withCredentials: true,
       });
-
-      toast.success(response.data.message);
-      setCourses(prevCourses => prevCourses.filter(course => course._id !== id));
+      if (!window.confirm("Are you sure you want to delete this course?")) return;
+      toast.success(response.data.message || "Course deleted.");
+      setCourses((prev) => prev.filter((course) => course._id !== id));
     } catch (error) {
-      console.error("Error in deleting course:", error);
-      toast.error(error.response?.data?.error || "Error in deleting course");
+      console.error("Error deleting course:", error);
+
+      const message =
+        error.response?.data?.error ||
+        error.response?.data?.errors ||
+        "Failed to delete course";
+
+      toast.error(message);
     }
   };
 
@@ -68,24 +75,28 @@ function OurCourses() {
 
       {loading ? (
         <div className="flex justify-center items-center h-[50vh]">
-          <div className="w-12 h-12 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
+          <div className="loader" />
         </div>
       ) : courses.length === 0 ? (
         <p className="text-center text-lg text-white">
           No courses found. Please add some courses.
         </p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-500">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {courses.map((course) => (
             <div
               key={course._id}
-              className="bg-[#171717] p-4 rounded shadow hover:shadow-lg transition-all duration-500"
+              className="bg-[#171717] p-4 rounded shadow hover:shadow-lg transition-all"
             >
               <div className="flex justify-center">
-                <img src={course.image.url} alt="img" className="h-56" />
+                <img
+                  src={course.image?.url || "/default.jpg"}
+                  alt={course.title}
+                  className="h-56 object-cover"
+                />
               </div>
-              <h3 className="text-xl font-bold mb-2">{course.title}</h3>
-              <p className="mb-2">{course.description}</p>
+              <h3 className="text-xl font-bold mt-2">{course.title}</h3>
+              <p className="my-2">{course.description}</p>
               <p className="text-[#24cfa6] font-bold mb-4">₹{course.price}</p>
               <button
                 onClick={() => handleDelete(course._id)}

@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 
 // course creation
 export const createCourse = async (req, res) => {
-    const adminId = req.adminId;
+    const adminId = req.user.id;
     const { title, description, price } = req.body;
     try {
         if (!title || !description || !price) {
@@ -87,6 +87,12 @@ export const deleteCourse = async (req, res) => {
         const { courseID } = req.params; // Extract courseID from URL parameters
         console.log("🟢 Deleting course with ID:", courseID);
 
+        if (!courseID) {
+            console.log("⚠️ No courseID provided in params.");
+            return res.status(400).json({ error: "No course ID provided" });
+        }
+        
+
         const course = await Course.findById(courseID);
         if (!course) {
             return res.status(404).json({ error: "Course not found!" });
@@ -107,21 +113,14 @@ export const deleteCourse = async (req, res) => {
 // All courses
 export const getCourse = async (req, res) => {
     try {
-        let courses;
+        const userId = req.userId;
 
-        // 🔐 If user is logged in, filter out purchased courses
-        if (req.userId) {
-            const userId = req.userId;
+        // 🧠 Fetch user's purchased courseIds
+        const purchases = await Purchase.find({ userId });
+        const purchasedCourseIds = purchases.map(p => p.courseId.toString());
 
-            const purchases = await Purchase.find({ userId });
-            const purchasedCourseIds = purchases.map(p => p.courseId.toString());
-
-            // ✅ Show only courses NOT purchased
-            courses = await Course.find({ _id: { $nin: purchasedCourseIds } }).sort({ createdAt: -1 });
-        } else {
-            // 🆓 If user not logged in, show all courses
-            courses = await Course.find().sort({ createdAt: -1 });
-        }
+        // 🔥 Exclude purchased courses using $nin
+        const courses = await Course.find({ _id: { $nin: purchasedCourseIds } }).sort({ createdAt: -1 });
 
         res.status(200).json({ courses });
     } catch (error) {
@@ -129,7 +128,6 @@ export const getCourse = async (req, res) => {
         res.status(500).json({ errors: "Error in getting courses" });
     }
 };
-
 
 
 

@@ -1,9 +1,10 @@
+import dotenv from "dotenv";
+dotenv.config(); 
 import { Admin } from "../models/admin.model.js";
 import config from "../config.js";
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import jwt from "jsonwebtoken";
-
 // signup
 export const signup = async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
@@ -52,21 +53,16 @@ export const login = async (req, res) => {
             return res.status(403).json({ errors: "Invalid credentials" });
         }
 
-        const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, {
+        // 🔐 Sign token
+        const token = jwt.sign({ id: admin._id }, process.env.JWT_ADMIN_PASSWORD, {
             expiresIn: "1d",
         });
 
-        res.cookie("jwt", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "None",
-            path: "/",
-            maxAge: 24 * 60 * 60 * 1000, // 1 day
-        });
+        console.log("✅ Signing with secret:", process.env.JWT_SECRET?.slice(0, 5));
 
         res.status(200).json({
             message: "Login successful",
-            token,  // 🟢 Include token here
+            token,
             admin: {
                 _id: admin._id,
                 email: admin.email,
@@ -74,6 +70,7 @@ export const login = async (req, res) => {
             },
         });
     } catch (error) {
+        console.error("❌ Login error:", error);
         res.status(500).json({ errors: "Error in login" });
     }
 };
