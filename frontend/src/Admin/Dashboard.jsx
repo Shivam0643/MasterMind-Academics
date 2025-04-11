@@ -24,8 +24,9 @@ function Dashboard() {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("✅ Admin Data:", res.data.admin);
+        // console.log("✅ Admin Data:", res.data.admin);
         setAdmin(res.data.admin);
+        navigate("/admin/dashboard")
       } catch (err) {
         console.error("❌ Unauthorized - Redirecting to login");
         toast.error("Unauthorized! Please login again.");
