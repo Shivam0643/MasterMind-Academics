@@ -38,7 +38,7 @@ const router = createBrowserRouter([
       // Admin Routes
       { path: "admin/signup", element: <AdminSignup /> },
       { path: "admin/login", element: <AdminLogin /> },
-      { path: "dashboard", element: <Dashboard /> },
+      { path: "admin/dashboard", element: <Dashboard /> },
       {
         path: "admin/",
         element: <ProtectedAdminRoute />,
