@@ -38,11 +38,11 @@ const router = createBrowserRouter([
       // Admin Routes
       { path: "admin/signup", element: <AdminSignup /> },
       { path: "admin/login", element: <AdminLogin /> },
-      { path: "admin/dashboard", element: <Dashboard /> },
       {
         path: "admin/",
         element: <ProtectedAdminRoute />,
         children: [
+          { path: "dashboard", element: <Dashboard /> },
           { path: "createcourse", element: <CreateCourse /> },
           { path: "lectures", element: <Lectures /> },
           { path: "ourcourses", element: <OurCourses /> },

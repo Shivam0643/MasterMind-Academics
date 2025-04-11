@@ -25,7 +25,6 @@ function AdminLogin() {
         { email, password },
         {
           withCredentials: true,
-          headers: { "Content-Type": "application/json" },
         }
       );
 
