@@ -104,7 +104,7 @@ function Courses() {
                                     <p className="text-xl font-mono flex items-center justify-center md:justify-start gap-4 py-10">
                                         Courses that actually help <FaArrowDown />
                                     </p>
-                                    <div className="grid md:grid-cols-3 gap-10 md:gap-20">
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-20">
                                         {availableCourses.map((course) => (
                                             <div key={course._id} className="flex flex-col gap-4">
                                                 <div onClick={() => handleViewDetails(course._id)} className="bg-[#171717] text-white rounded-2xl h-96 cursor-pointer hover:shadow-lg transition-all">
