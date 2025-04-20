@@ -19,6 +19,7 @@ import Lectures from './Admin/Lectures';
 import CourseLectures from './pages/CourseLectures';
 import QuizManagement from "./Admin/QuizManagement";
 import AllPurchases from "./Admin/AllPurchases";
+import AllUsers from "./Admin/AllUsers";
 
 const router = createBrowserRouter([
   {
@@ -47,7 +48,8 @@ const router = createBrowserRouter([
           { path: "lectures", element: <Lectures /> },
           { path: "ourcourses", element: <OurCourses /> },
           { path: "quizzes", element: <QuizManagement /> },
-          { path: "all-purchases", element: <AllPurchases /> }
+          { path: "all-purchases", element: <AllPurchases /> },
+          { path: "all-users", element: <AllUsers /> },
         ],
       }
     ],

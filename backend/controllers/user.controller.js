@@ -46,7 +46,11 @@ export const login = async (req, res) => {
     try {
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(403).json({ errors: "Invalid credentials" });
+            return res.status(401).json({ errors: "Invalid credentials" });
+        }
+
+        if (user.isBlocked) {
+            return res.status(403).json({ message: "Your account has been blocked. Contact support." });
         }
 
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
@@ -55,9 +59,6 @@ export const login = async (req, res) => {
         }
 
         const token = jwt.sign({ id: user._id }, config.JWT_USER_PASSWORD, { expiresIn: "1d" });
-
-        console.log("✅ Generated Token:", token);
-        console.log("✅ User ID:", user._id);
 
         res.status(201).json({
             message: "Login successful",
@@ -71,6 +72,77 @@ export const login = async (req, res) => {
     } catch (error) {
         console.error("❌ Error in login:", error);
         res.status(500).json({ errors: "Error in login" });
+    }
+};
+
+
+// Get all users
+export const allUsers = async (req, res) => {
+    try {
+        const users = await User.find();
+
+        if (!users || users.length === 0) {
+            return res.status(404).json({ message: "No users found" });
+        }
+
+        return res.status(200).json({ users }); // Return users array
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        return res.status(500).json({ message: "Error in fetching user details" });
+    }
+};
+
+// delete user
+export const deleteUser = async (req, res) => {
+    const userId = req.params.id;
+
+    try {
+        // Find the user by ID
+        const user = await User.findById(userId);
+
+        // If the user doesn't exist, return 404
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Delete the user
+        await User.findByIdAndDelete(userId);
+
+        // Return success message
+        return res.status(200).json({
+            message: "User deleted successfully",
+        });
+    } catch (error) {
+        console.error("Error deleting user:", error);
+
+        // Return an error if something goes wrong
+        return res.status(500).json({
+            message: "An error occurred while deleting the user",
+        });
+    }
+};
+
+// Toggle block/unblock user
+export const toggleBlockUser = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Toggle the user's block status
+        user.isBlocked = !user.isBlocked; // If blocked, unblock; if unblocked, block
+        await user.save(); // Save the updated user data
+
+        res.status(200).json({
+            message: `User ${user.isBlocked ? "blocked" : "unblocked"} successfully`,
+            user,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "An error occurred while updating user status" });
     }
 };
 

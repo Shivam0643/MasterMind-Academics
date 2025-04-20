@@ -58,8 +58,6 @@ export const login = async (req, res) => {
             expiresIn: "1d",
         });
 
-        console.log("✅ Signing with secret:", process.env.JWT_SECRET?.slice(0, 5));
-
         res.status(200).json({
             message: "Login successful",
             token,

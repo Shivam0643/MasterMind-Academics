@@ -18,12 +18,16 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    isBlocked: {
+        type: Boolean,
+        default: false
+    },
     purchasedCourses: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Purchase", // This refers to the purchaseSchema
         }
     ]
-});
+}, { timestamps: true });
 
 export const User = mongoose.model("User", userSchema);
