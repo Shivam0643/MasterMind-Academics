@@ -67,4 +67,4 @@ MasterMind Academix is a modern full-stack course-selling platform where student
 
 ### Clone the repository
 ```bash
-git clone https://github.com/shreyashthaware/MasterMind-Academix.git
+git clone https://github.com/Shivam0643/MasterMind-Academix.git
